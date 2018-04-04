@@ -1,0 +1,24 @@
+{
+  "name": "skrumble-javascript-sdk",
+  "description": "An SDK for Javascript SPAs to connect to the Skrumble API",
+  "main": "dist/skrumble-js-sdk.js",
+  "keywords": [
+    "sdk",
+    "skrumble",
+    "javascript",
+    "WebRTC"
+  ],
+  "authors": [
+    "Skrumble Development Team"
+  ],
+  "license": "MIT",
+  "homepage": "http://developers.skrumble.com/",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

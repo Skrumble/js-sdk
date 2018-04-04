@@ -1,0 +1,234 @@
+<!-- 
+    SDK Debug page
+    Small Vanilla JS app for testing and logging the functionality of the SDK.
+    Uses as few dependencies as possible, for both speed and to use as examples in the docs. 
+-->
+<html>
+    <head>
+        
+        <title>Skrumble JS SDK</title>
+
+        <script>
+            window.SkrumbleLoadPath = "dist/";
+        </script>
+        <script src="./dist/skrumble.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/emojione/2.2.7/lib/js/emojione.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/emojione/2.2.7/assets/css/emojione.min.css"/>
+
+        <script>
+
+            var current_user;
+
+            var config = {
+                client_id: "f38y8",
+                client_secret:"|--F?N|wS91LPld!DfO+mQ*3%S-#I3R0-wS7hs-B",
+                api_hostname: "sk-staging.skrumble.com",
+                auth_hostname: "auth-staging.skrumble.com",
+                user_agent: "my-app"
+            }
+
+            document.addEventListener("DOMContentLoaded", function(evt) {
+
+                Skrumble.APISocket.config({
+                    client_id: config.client_id, 
+                    client_secret: config.client_secret,
+                    api_hostname: config.api_hostname,
+                    auth_hostname: config.auth_hostname
+                });
+
+            });
+
+            function onLoginSubmit(evt) {
+                evt.preventDefault(); 
+                login(evt.target.elements.email.value, evt.target.elements.password.value)
+            }
+
+            function login(email, password) {
+
+                Skrumble.APISocket
+                    .login({
+                        email: email,
+                        password: password
+                    })
+                    .then(skrumble_connected)
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+            }
+
+            function skrumble_connected(curUser) {
+
+                current_user = curUser;
+                console.log("Login successful", curUser);
+
+                // Display user data
+                var user_debug = "<strong>Current user</strong><br />";
+                for (var i = 0; i < Object.keys(curUser).length; i++) {
+                    user_debug += Object.keys(curUser)[i] + ": " + curUser[Object.keys(curUser)[i]] + "<br />"; 
+                }
+                document.getElementById('user_debug').innerHTML = user_debug;
+
+
+                // Listen and log socket message types
+                Skrumble.APISocket.on("user", function() { console.log("User event", arguments); });
+                Skrumble.APISocket.on("teamuser", function() { console.log("TeamUser event", arguments); });
+                Skrumble.APISocket.on("team", function() { console.log("Team event", arguments); });
+                Skrumble.APISocket.on("conference", function() { console.log("Conference event", arguments); });
+
+                
+                // Get and display a list of chats
+                Skrumble.Chat.getAll({ limit: 100000 }).then(function(chats) {
+                    var chat_debug = "<strong>Chats</strong><br />";
+
+                    chats.map(function(chat) {
+                        var other_user
+                        if (chat.type == "private") {
+                            other_user = chat.users.find((user) => {
+                                return (user.id != current_user.id);
+                            });
+                            if (other_user) {
+                                chat_debug += other_user.first_name + "<em> (" + chat.id + ")</em>"; 
+                            } else {
+                                debugger;
+                            }
+                        } else {
+                            chat_debug += emojione.shortnameToUnicode(chat.name) + "<em> (" + chat.id + ")</em>";
+                        }
+
+                        chat_debug += "<button onClick='getChat(\"" + chat.id + "\")'>get chat log</button>";
+
+                        if (chat.type == "private") {
+                            chat_debug += "<button onClick='startCall(\"" + other_user.id + "\")'>call user</button>";
+                        } else {
+                            chat_debug += "<button onClick='startCall(\"room" + chat.id + "\")'>call group</button>";
+                        }
+    
+                        chat_debug += "<br />"
+                    });
+
+                    document.getElementById("chats_debug").innerHTML = chat_debug;
+
+                });
+
+            }
+
+    
+
+
+            // Logs and outputs the current chat, parses emoji
+            function setCurrentChat(Chat) {
+
+                window.curChat = Chat;
+                document.getElementById("chatinfo_debug").innerHTML = emojione.shortnameToUnicode(Chat.toHTML());
+                document.getElementById("chat_msg_debug").disabled = false
+                document.getElementById("chat_msg_debug").focus();
+
+            }
+
+
+            // Loads a chat by ID, displays it, and allows sending a message
+            function getChat(id) {
+
+                document.getElementById("chatinfo_debug").innerHTML = "Loading...";
+
+                Skrumble.Chat.get({
+                    id: id,
+                    load_messages: true,
+                    message_limit: 500
+                }).then(function(Chat) {
+        
+                    setCurrentChat(Chat);
+                    document.getElementById("sendmsg_form").addEventListener("submit", sendMessage);
+
+                    Chat.on('updated', function(evt, chat) {
+                        console.log("updated", Chat.name);
+                        setCurrentChat(chat);
+                    })
+
+                    Chat.on('message', function(evt, chat, message) {
+                        console.log("new chat msg", evt, message, chat); 
+                        setCurrentChat(chat);
+                    });
+
+                });
+
+            }
+
+
+            // Send a message to the chat selected by getChat
+            function sendMessage(e) {
+                e.preventDefault();
+
+                curChat
+                    .sendMessage(document.getElementById("chat_msg_debug").value)
+                    .then(function(message) {
+                        document.getElementById("chat_msg_debug").value = ""
+                    });
+
+                return false;
+            }
+
+
+        </script>
+
+        <style>
+
+            .sendmsg {
+                position: fixed; 
+                bottom: 0px; 
+                left: 0; 
+                width: 100%; 
+                height: 50px; 
+                background: #FFF; 
+                margin: 0; 
+                z-index: 1000; 
+                padding: 10px;
+            }
+
+        </style>
+
+    </head>
+
+
+    <body style="padding-bottom: 70px">
+       
+        <div 
+            class="login_info"
+            style="display: block; position: fixed; top: 0; right: 0; border: 1px #333; padding: 30px 50px 20px; background: #CCC;">
+            <form 
+                onSubmit="onLoginSubmit(event);">
+
+                <input 
+                    type="text" 
+                    placeholder="email" 
+                    name="email"
+                />
+
+                <input
+                    type="password"
+                    placeholder="password"
+                    name="password"
+                />
+                
+                <button
+                    type="submit">
+                    Login
+                </button>
+
+            </form>
+        </div>
+
+        <div id="user_debug"></div>
+        <div id="chats_debug"></div>
+        <div id="chatinfo_debug" style="border: 1px solid #F00; font: 10px/15px 'Menlo';"></div> 
+
+        <form id="sendmsg_form" class="sendmsg" style="" autocomplete="off">
+            <input type="text" id="chat_msg_debug" tabindex="0" disabled="true" />
+            <button type="submit">Send</button>
+        </form>
+
+    </body>
+
+</html>

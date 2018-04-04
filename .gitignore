@@ -1,0 +1,15 @@
+# Derived files
+dist/*
+node_modules/*
+docs/*
+coverage/*
+out/*
+
+
+# Logs and OS junk
+yarn-*.log
+*.DS_Store
+*.com.apple.timemachine.supported
+
+# Temp files
+.tmp/*
