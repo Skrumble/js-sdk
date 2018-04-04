@@ -5,12 +5,12 @@
 The JS SDK is distributed through the npm registry, which means it can be installed with npm. In a bash window, run:
 
 ```bash
-npm i --save @skrumble/skrumble-js-sdk 
+npm i --save @skrumble/js-sdk 
 ```
 
 Or to install with yarn, run:
 ```bash
-yarn install @skrumble/skrumble-js-sdk
+yarn install @skrumble/js-sdk
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ The SDK supports multiple formats for loading, depending on your environment:
 var {
     Chat,
     APISocket
-} = require('@skrumble/skrumble-js-sdk')
+} = require('@skrumble/js-sdk')
 ```
 
 **ES6**
@@ -29,7 +29,7 @@ var {
 import {
     Chat, 
     APISocket
-} from '@skrumble/skrumble-js-sdk'
+} from '@skrumble/js-sdk'
 ```
 
 In case your environment doesn't support either, the SDK also exports a global called `Skrumble`, which contains the same classes as properties: 
@@ -50,7 +50,7 @@ First you'll need:
 import {
   Chat,
   APISocket
-} from '@skrumble/skrumble-js-sdk';
+} from '@skrumble/js-sdk';
 let registeredUser, loadedChat
 
 APISocket.config({ 
@@ -86,7 +86,7 @@ The SDK is an open-source project, and PRs, contributions, and bug reports are e
 ### Documentation
 There are separate NPM tasks for generating and serving docs. To generate the docs, run `npm run docs`, which will read the code in `src/` and output it to `docs/`. 
 
-To view it in a browser using SimpleHTTPServer, run `npm run docs_serve`. The docs should now be visible on {@link http://localhost:3000}
+To view it in a browser using SimpleHTTPServer, run `npm run docs_serve`. The docs should now be visible at [http://localhost:5000](http://localhost:5000)
 
 ### Testing
 The SDK currently uses mocha/chai as a testing suite. `npm run test` will run the tests and output results to the console. 
