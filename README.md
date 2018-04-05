@@ -1,5 +1,5 @@
 
-![Skrumble API](https://img.shields.io/badge/Skrumble%20API-v2.3.2-2196f3.svg?style=flat-square)
+![Skrumble API](https://img.shields.io/badge/Skrumble%20API-v2.3.2-2196f3.svg?style=flat-square) [![Join the chat at https://gitter.im/Skrumble/js-sdk](https://badges.gitter.im/Skrumble/js-sdk.svg)](https://gitter.im/Skrumble/js-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Installation
 The JS SDK is distributed through the npm registry, which means it can be installed with npm. In a bash window, run:
