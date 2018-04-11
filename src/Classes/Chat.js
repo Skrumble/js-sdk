@@ -412,7 +412,15 @@ export class Chat {
         let chats_raw = await APISocket.get(`chat?populate=users&limit=${options.limit}&skip=${options.skip}`);
 
         chats_raw.map((chat_info) => {
-            chats.push(new Chat(chat_info));
+
+            let chat = new Chat(chat_info)
+
+            // Turn user list into real user obects
+            if (chat_info.users && chat_info.users.legnth > 0) {
+                chat.users = chat_info.users.map((chat_userinfo) => new User(chat_userinfo));
+            }
+
+            chats.push(chat);
         });
 
         return chats;
