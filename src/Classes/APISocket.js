@@ -1,16 +1,11 @@
 import axios from 'axios';
-import SocketIOClient from "socket.io-client"
-import SailsIOClient from "sails.io.js-dist"
+import io from "socket.io-client"
 
 import { User } from "./User";
 import { Team } from "./Team";
 import { Logger } from "./Logger";
 import { Guest } from "./Guest";
 import { removeTrailingSlash } from "../Skrumble";
-
-
-// socket.io library needs to be transformed exactly once
-let sailsIo = SailsIOClient(SocketIOClient);
 
 
 /**
@@ -314,22 +309,37 @@ export class APISocket {
      * This connects a user to the socket and registers them for future changes. After the call to `login` completes, default behaviour will be to call this automatically.
      *
      */
-    static async connectSocket() {
+    static connectSocket() {
 
-        this.io = sailsIo;
-        this.io.sails.autoConnect = false;
+        return new Promise((resolve, reject) => {
 
-        this.io.sails.url = this.api_url;
-        this.io.sails.headers = {
-            "Authorization": `Bearer ${this.access_token}`
-        }
+            const socket = io(
+                `${this.api_url}`, 
+                {
+                    path: '/socket.io/',
+                    transports: ['websocket'],
+                    query: {
+                        '__sails_io_sdk_version': '1.1.13',
+                        '__sk_js_sdk_version': '0.1.1'
+                    }
+                }
+            );
 
-        this.socket = this.io.sails.connect(['websocket']);
-        this.socket.on('connect', async () => {
-            var register_res = await this.socket.post(
-                `${this.api_url}/v3/socket/register`
-            )
-            return true;
+            this.socket = socket;
+
+            socket.on('connect', () => {
+                resolve(true);
+            });
+
+            socket.on('connect_error',   onConnectError)
+            socket.on('connect_timeout', onConnectError)
+            socket.on('connect_timeout', onConnectError)
+
+            const onConnectError = () => {
+                console.log("connection error");
+                reject(false);
+            }
+
         });
 
     }
@@ -342,11 +352,8 @@ export class APISocket {
      *
      */
     static logout() {
-
         this.socket = false;
-        // this.io = false;
         this.current_user = false;
-
     }
 
     
@@ -366,23 +373,7 @@ export class APISocket {
      * JSON Websocket Response object as the second argument.
      */
     static get(url, data, append_url = true) {
-
-        if (!this.socket) return;
-
-        return new Promise((resolve, reject) => {
-
-            let req_url = (append_url) ? `${APISocket.api_url}/v3/${url}` : url;
-            this.socket.get(req_url, data, async (res, jwres) => {
-                if (Math.floor(jwres.statusCode/100) === 2) { 
-                    resolve(res, jwres); 
-                } else {
-                    throw new Error(jwres);
-                    reject(res, jwres);
-                }
-            })
- 
-        })
-
+        return APISocket.request('get', url, data, append_url);
     }
 
 
@@ -400,21 +391,7 @@ export class APISocket {
      * be rejected with the body of the response as the first argument.
      */
     static post(url, data, append_url = true) {
-
-        return new Promise((resolve, reject) => {
-
-            let req_url = (append_url) ? `${APISocket.api_url}/v3/${url}` : url;
-            this.socket.post(req_url, data, async (res, jwres) => {
-                if (parseInt(jwres.statusCode/100) == 2) {
-                    resolve(res, jwres); 
-                } else {
-                    throw new Error(jwres);
-                    reject(res, jwres);
-                }
-            })
- 
-        })
-
+        return APISocket.request('get', url, data, append_url);
     }
 
 
@@ -432,21 +409,7 @@ export class APISocket {
      * be rejected with the body of the response as the first argument.
      */
     static patch(url, data, append_url = true) {
-
-        return new Promise((resolve, reject) => {
-
-            let req_url = (append_url) ? `${APISocket.api_url}/v3/${url}` : url;
-            this.socket.patch(req_url, data, async (res, jwres) => {
-                if (parseInt(jwres.statusCode/100) == 2) {
-                    resolve(res, jwres); 
-                } else {
-                    throw new Error(jwres);
-                    reject(res, jwres);
-                }
-            })
- 
-        })
-
+        return APISocket.request('patch', url, data, append_url);
     }
 
 
@@ -464,23 +427,51 @@ export class APISocket {
      * be rejected with the body of the response as the first argument.
      */
     static delete(url, data, append_url = true) {
+        return APISocket.request('delete', url, data, append_url);
+    }
+
+
+    /**
+     * @static
+     * @async
+     * @summary
+     * Sends a request with a given HTTP method. Shorthand versions are available
+     * as APISocket.get(), post(), patch(), and delete()
+     * 
+     * @param {String} method   - HTTP Method to be used in the request
+     * @param {String} url      - Url to be passed to socket.io.get()
+     * @param {Object} options  - Options object to be passed to socket.io.get()
+     * @returns {Promise}       - A promise object that either is resolved
+     * with success for sucessful (`2xx`) responses with the body of the response
+     * as the first argument. If the request fails (`!= 2xx`), the promise will 
+     * be rejected with the body of the response as the first argument.
+     */
+    static request(method, url, data, append_url = true) {
 
         return new Promise((resolve, reject) => {
 
-            let req_url = (append_url) ? `${APISocket.api_url}/v3/${url}` : url;
-            this.socket.delete(req_url, data, async (res, jwres) => {
-                if (parseInt(jwres.statusCode/100) == 2) {
-                    resolve(res, jwres); 
-                } else {
-                    throw new Error(jwres);
-                    reject(res, jwres);
+            this.socket.emit(method,
+                {
+                    url: (append_url) ? `${APISocket.api_url}/v3/${url}` : url, 
+                    headers: {
+                        "Authorization": `Bearer ${this.access_token}`
+                    },
+                    method,
+                    data, 
+                },
+                async (res) => {
+                    if (Math.floor(res.statusCode/100) === 2) { 
+                        resolve(res.body, res); 
+                    } else {
+                        throw new Error(`${res.statusCode} error: ${res.body}`);
+                        reject(res.body, res);
+                    }
                 }
-            })
+            )
  
         })
 
     }
-
 
     /**
      * @static
