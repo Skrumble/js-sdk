@@ -21,7 +21,7 @@ The SDK supports multiple formats for loading, depending on your environment:
 var {
     Chat,
     APISocket
-} = require('@skrumble/skrumble-js-sdk')
+} = require('@skrumble/js-sdk')
 ```
 
 **ES6**
@@ -29,7 +29,7 @@ var {
 import {
     Chat, 
     APISocket
-} from '@skrumble/skrumble-js-sdk'
+} from '@skrumble/js-sdk'
 ```
 
 In case your environment doesn't support either, the SDK also exports a global called `Skrumble`, which contains the same classes as properties: 
@@ -50,7 +50,7 @@ First you'll need:
 import {
   Chat,
   APISocket
-} from '@skrumble/skrumble-js-sdk';
+} from '@skrumble/js-sdk';
 let registeredUser, loadedChat
 
 APISocket.config({ 
