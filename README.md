@@ -5,12 +5,12 @@
 The JS SDK is distributed through the npm registry, which means it can be installed with npm. In a bash window, run:
 
 ```bash
-npm i --save @skrumble/skrumble-js-sdk 
+npm i --save @skrumble/js-sdk 
 ```
 
 Or to install with yarn, run:
 ```bash
-yarn install @skrumble/skrumble-js-sdk
+yarn install @skrumble/js-sdk
 ```
 
 ## Usage
@@ -86,7 +86,7 @@ The SDK is an open-source project, so Pull Requests and bug reports are encourag
 ### Documentation
 There are separate NPM tasks for generating and serving docs. To generate the docs, run `npm run docs`, which will read the code in `src/` and output it to `docs/`. 
 
-To view it in a browser using SimpleHTTPServer, run `npm run docs_serve`. The docs should now be visible on {@link http://localhost:3000}
+To view it in a browser using SimpleHTTPServer, run `npm run docs_serve`. The docs should now be visible at [localhost:5000/index.html](http://localhost:5000/index.html)
 
 ### Testing
 The SDK currently uses mocha/chai as a testing suite. `npm run test` will run the tests and output results to the console. 
