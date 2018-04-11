@@ -1,5 +1,5 @@
 
-![Skrumble API](https://img.shields.io/badge/Skrumble%20API-v2.3.2-2196f3.svg?style=flat-square)
+![Skrumble API](https://img.shields.io/badge/Skrumble%20API-v2.3.2-2196f3.svg?style=flat-square) [![Join the chat at https://gitter.im/Skrumble/js-sdk](https://badges.gitter.im/Skrumble/js-sdk.svg)](https://gitter.im/Skrumble/js-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Installation
 The JS SDK is distributed through the npm registry, which means it can be installed with npm. In a bash window, run:
@@ -42,8 +42,8 @@ let APISocket = Skrumble.APISocket
 
 ### Configuring & Logging-in 
 First you'll need:
-1. Client credentials from the Skrumble [Developer site](developers.skrumble.com/request-key)
-2. Hostnames for the environment you're using, see the [Environments list](developers.skrumble.com/knowledge-base/skrumble-api-overview/#environments) in the developer docs
+1. Client credentials from the Skrumble [Developer site](https://developers.skrumble.com/request-key)
+2. Hostnames for the environment you're using, see the [Environments list](https://developers.skrumble.com/knowledge-base/skrumble-api-overview/#environments) in the developer docs
 3. An existing team on the server
 
 ```javascript
