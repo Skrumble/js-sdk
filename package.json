@@ -5,7 +5,7 @@
   "main": "dist/skrumble.min.js",
   "scripts": {
     "build": "webpack",
-    "docs": "./node_modules/.bin/jsdoc src/**/*.js --destination ./docs -c ./jsdoc/jsdoc_conf.json -t ./jsdoc/template -R README.md --package package.json",
+    "docs": "./node_modules/.bin/jsdoc src/**/*.js -c ./jsdoc/jsdoc_conf.json",
     "docs_serve": "cd docs; python -m SimpleHTTPServer 5000",
     "test": "./node_modules/.bin/cross-env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov --reporter=text --include=src/**/*.js --exclude=src/**/*.spec.js ./node_modules/.bin/mocha-webpack --webpack-config webpack.config.js \"test/**/*.spec.js\" -r jsdom-global/register --reporter spec"
   },

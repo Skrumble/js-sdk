@@ -6,7 +6,11 @@
         "plugins/partial"
     ],
     "opts": {
-        "recurse": true
+        "recurse": true,
+        "destination": "./docs",
+        "template": "./jsdoc/template",
+        "readme": "README.md",
+        "package": "package.json"
     },
     "tags": {
         "allowUnknownTags": true
@@ -29,7 +33,8 @@
         "methodHeadingReturns": false,
         "theme": "paper",
         "systemName": "Skrumble JS SDK",
-        "footer": "<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>"
+        "footer": "<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>",
+        "disablePackagePath": true
     },
     "markdown": {
         "parser": "gfm"
