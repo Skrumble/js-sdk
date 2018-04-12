@@ -50,7 +50,7 @@ First you'll need:
 import {
   Chat,
   APISocket
-} from '@skrumble/skrumble-js-sdk';
+} from '@skrumble/js-sdk';
 let registeredUser, loadedChat
 
 APISocket.config({ 
