@@ -327,8 +327,13 @@ export class APISocket {
 
             this.socket = socket;
 
-            socket.on('connect', () => {
-                resolve(true);
+            socket.on('connect', async () => {
+                try {
+                    let register_res = await APISocket.post(`socket/register`)
+                    resolve(true);
+                } catch(err) {
+                    reject(err);
+                }
             });
 
             socket.on('connect_error',   onConnectError)
@@ -391,7 +396,7 @@ export class APISocket {
      * be rejected with the body of the response as the first argument.
      */
     static post(url, data, append_url = true) {
-        return APISocket.request('get', url, data, append_url);
+        return APISocket.request('post', url, data, append_url);
     }
 
 
