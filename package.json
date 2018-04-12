@@ -1,6 +1,6 @@
 {
   "name": "@skrumble/js-sdk",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "An SDK for Javascript SPAs to connect to the Skrumble API",
   "main": "dist/skrumble.min.js",
   "scripts": {
