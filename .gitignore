@@ -1,7 +1,6 @@
 # Derived files
 dist/*
 node_modules/*
-docs/*
 coverage/*
 out/*
 

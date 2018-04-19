@@ -1,4 +1,76 @@
-import { APISocket } from "./APISocket";
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Skrumble JS SDK Source: Chat.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Skrumble JS SDK</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Department.html">Department</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: Chat.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import { APISocket } from "./APISocket";
 import { Logger } from "./Logger";
 import { User } from "./User";
 import { ChatMessage } from "./ChatMessage";
@@ -278,7 +350,7 @@ export class Chat {
             if (this.hasOwnProperty(key)) { 
 
                 // Stop using the word "room"
-                if (key == "type" && value == "room") value = "group";
+                if (key == "type" &amp;&amp; value == "room") value = "group";
 
                 // Turn the users list into real users
                 if (key == "users") {
@@ -409,14 +481,14 @@ export class Chat {
         }, opts);
 
         let chats = [];
-        let chats_raw = await APISocket.get(`chat?populate=users&limit=${options.limit}&skip=${options.skip}`);
+        let chats_raw = await APISocket.get(`chat?populate=users&amp;limit=${options.limit}&amp;skip=${options.skip}`);
 
         chats_raw.map((chat_info) => {
 
             let chat = new Chat(chat_info)
 
             // Turn user list into real user obects
-            if (chat_info.users && chat_info.users.legnth > 0) {
+            if (chat_info.users &amp;&amp; chat_info.users.legnth > 0) {
                 chat.users = chat_info.users.map((chat_userinfo) => new User(chat_userinfo));
             }
 
@@ -449,15 +521,15 @@ export class Chat {
 
         if (!options.id) Logger.error("Chat.get requires an id");
 
-        let querystring = "populate=users&sort=updatedAt+DESC&limit=1000&skip=0"
+        let querystring = "populate=users&amp;sort=updatedAt+DESC&amp;limit=1000&amp;skip=0"
 
         let chat_info = await APISocket.get(`chat/${options.id}?${querystring}`)
 
         if (options.load_messages === true) {
-            let messages = await APISocket.get(`chat/${options.id}/messages?populate=file&populate=user_mentions&limit=${options.message_limit}&skip=${options.message_skip}`);
+            let messages = await APISocket.get(`chat/${options.id}/messages?populate=file&amp;populate=user_mentions&amp;limit=${options.message_limit}&amp;skip=${options.message_skip}`);
            
             messages = messages.sort(function(a, b) {
-                if (new Date(a) < new Date(b)) {
+                if (new Date(a) &lt; new Date(b)) {
                     return 1;
                 } else if (new Date(a) > new Date(b)) {
                     return -1;
@@ -489,8 +561,10 @@ export class Chat {
 
         }, opts);
 
-        if (this.created_at && this.id) {
+        if (this.created_at &amp;&amp; this.id) {
             console.log("Existing chat");
+            // PATCH /chat/:chat_id
+            // ONLY name, purpose and locked
         } else {
             console.log("No created_at, creating new");
             // This is a totally new chat
@@ -625,7 +699,7 @@ export class Chat {
 
         let add_response;
 
-        if (typeof users === "object" && users.constructor.name === "User") {
+        if (typeof users === "object" &amp;&amp; users.constructor.name === "User") {
             try {
                 add_response = await APISocket.post(`chat/${this.id}/users`, {
                     user: users.id
@@ -664,7 +738,7 @@ export class Chat {
 
         let add_response;
 
-        if (typeof users === "object" && users.constructor.name === "User") {
+        if (typeof users === "object" &amp;&amp; users.constructor.name === "User") {
             try {
                 add_response = await APISocket.delete(`chat/${this.id}/users/${users.id}`)
             } catch (err) {
@@ -735,16 +809,16 @@ export class Chat {
 
         if (this.messages.length) { 
             messages = this.messages.reduce(function(acc, msg) {
-                acc = (typeof acc == "object") ? `${acc.toHTML()}<br />\n` : acc;
-                return `${acc} ${msg.toHTML()}<br />\n`;
+                acc = (typeof acc == "object") ? `${acc.toHTML()}&lt;br />\n` : acc;
+                return `${acc} ${msg.toHTML()}&lt;br />\n`;
             })
         }
 
         return `
-            <header>
-                <h1>${name}</h1> 
-                <p>${second_line}</p>
-            </header>
+            &lt;header>
+                &lt;h1>${name}&lt;/h1> 
+                &lt;p>${second_line}&lt;/p>
+            &lt;/header>
             
             ${messages}`; 
 
@@ -754,3 +828,142 @@ export class Chat {
 
 
 }
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+	<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>
+
+
+	<span class="copyright">
+	Skrumble
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Wed Apr 18th 2018
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

@@ -44,7 +44,6 @@ let APISocket = Skrumble.APISocket
 First you'll need:
 1. Client credentials from the Skrumble [Developer site](https://developers.skrumble.com/request-key)
 2. Hostnames for the environment you're using, see the [Environments list](https://developers.skrumble.com/knowledge-base/skrumble-api-overview/#environments) in the developer docs
-3. An existing team on the server
 
 ```javascript
 import {
@@ -103,10 +102,10 @@ The goal of the SDK is to provide convenient access to the full functionality of
     - [ ] **Invite user**
     - [ ] Invite guest
     - [x] Get one
-    - [ ] Get all
+    - [x] Get all
     - [x] Check existing
     - [x] User login
-    - [ ] Guest login
+    - [x] Guest login
     - [ ] Deactivate user
     - [ ] Register device for notification
     - [ ] Deregister device for notification
@@ -116,13 +115,14 @@ The goal of the SDK is to provide convenient access to the full functionality of
     - [x] Get all
     - [ ] **Update chat info**
     - [ ] **Delete chat**
-    - [ ] Generate guest url
+    - [x] Generate guest url
     - [ ] **Mark as read**
-    - [ ] **Add user to group**
-    - [ ] **Remove user from group**
+    - [x] Add user to group
+    - [x] Remove user from group
     - [ ] Messages
         - [x] Send/recieve messages
-        - [ ] **Send files**
+        - [ ] Send file by URL
+        - [ ] **Send file by data**
         - [ ] Translate message
         - [ ] **Get unread**
     - [ ] Links

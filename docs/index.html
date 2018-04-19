@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Skrumble JS SDK Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Skrumble JS SDK</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Department.html">Department</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-10">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+    <h3>@skrumble/js-sdk 0.1.4</h3>
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><p><img src="https://img.shields.io/badge/Skrumble%20API-v2.3.2-2196f3.svg?style=flat-square" alt="Skrumble API"> <a href="https://gitter.im/Skrumble/js-sdk?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Skrumble/js-sdk.svg" alt="Join the chat at https://gitter.im/Skrumble/js-sdk"></a></p>
+<h2>Installation</h2><p>The JS SDK is distributed through the npm registry, which means it can be installed with npm. In a bash window, run:</p>
+<pre class="prettyprint source lang-bash"><code>npm i --save @skrumble/js-sdk </code></pre><p>Or to install with yarn, run:</p>
+<pre class="prettyprint source lang-bash"><code>yarn install @skrumble/js-sdk</code></pre><h2>Usage</h2><p>The SDK supports multiple formats for loading, depending on your environment:</p>
+<p><strong>UMD</strong></p>
+<pre class="prettyprint source lang-js"><code>var {
+    Chat,
+    APISocket
+} = require('@skrumble/js-sdk')</code></pre><p><strong>ES6</strong></p>
+<pre class="prettyprint source lang-js"><code>import {
+    Chat, 
+    APISocket
+} from '@skrumble/js-sdk'</code></pre><p>In case your environment doesn't support either, the SDK also exports a global called <code>Skrumble</code>, which contains the same classes as properties: </p>
+<pre class="prettyprint source lang-js"><code>let Chat = Skrumble.Chat    
+let APISocket = Skrumble.APISocket</code></pre><h3>Configuring &amp; Logging-in</h3><p>First you'll need:</p>
+<ol>
+<li>Client credentials from the Skrumble <a href="https://developers.skrumble.com/request-key">Developer site</a></li>
+<li>Hostnames for the environment you're using, see the <a href="https://developers.skrumble.com/knowledge-base/skrumble-api-overview/#environments">Environments list</a> in the developer docs</li>
+<li>An existing team on the server</li>
+</ol>
+<pre class="prettyprint source lang-javascript"><code>import {
+  Chat,
+  APISocket
+} from '@skrumble/js-sdk';
+let registeredUser, loadedChat
+
+APISocket.config({ 
+  client_id: &quot;iK47Sr....&quot;,
+  client_secret: &quot;$2y$10$J...&quot;, 
+  api_hostname: &quot;sandbox.skrumble.com&quot;,
+  auth_hostname: &quot;sandbox-auth.skrumble.com&quot;
+})
+
+
+try {
+  registeredUser = await APISocket.login({
+    email: &quot;skrumble_user@example.com&quot;,
+    password: &quot;123456&quot;
+  })
+} catch(err) {
+  throw new Error(err);  
+}
+
+
+try {
+  chatList = await Chat.getAll();
+} catch(err) {
+  throw new Error(err);
+}
+
+console.log(`Logged in as ${registeredUser.first_name}, found chat list of ${chatList}`); </code></pre><h2>Contributing</h2><p>The SDK is an open-source project, so Pull Requests and bug reports are encouraged. Before contributing, see the <a href="https://github.com/Skrumble/js-sdk/issues">Github Issues</a> page to ensure your issue/feature isn't a duplicate. </p>
+<h3>Documentation</h3><p>There are separate NPM tasks for generating and serving docs. To generate the docs, run <code>npm run docs</code>, which will read the code in <code>src/</code> and output it to <code>docs/</code>. </p>
+<p>To view it in a browser using SimpleHTTPServer, run <code>npm run docs_serve</code>. The docs should now be visible at <a href="http://localhost:5000/index.html">localhost:5000/index.html</a></p>
+<h3>Testing</h3><p>The SDK currently uses mocha/chai as a testing suite. <code>npm run test</code> will run the tests and output results to the console. </p>
+<h3>Roadmap</h3><p>The goal of the SDK is to provide convenient access to the full functionality of the <a href="http://developers.skrumble.com/knowledge-base/skrumble-rest-api/">Skrumble REST API</a>. For maintainers/contributors, unchecked items below are unimplemented, and therefore a good place to start contributing. <strong>Bold items</strong> are high-priority features. See our list of <a href="https://github.com/Skrumble/js-sdk/issues">Github Issues</a> for information about individual features.</p>
+<ul>
+<li>[ ] Teams<ul>
+<li>[x] Create team</li>
+<li>[ ] Update team info</li>
+</ul>
+</li>
+<li>[ ] Users<ul>
+<li>[x] Create user (add to team)</li>
+<li>[x] Update user info</li>
+<li>[ ] <strong>Invite user</strong></li>
+<li>[ ] Invite guest</li>
+<li>[x] Get one</li>
+<li>[x] Get all</li>
+<li>[x] Check existing</li>
+<li>[x] User login</li>
+<li>[x] Guest login</li>
+<li>[ ] Deactivate user</li>
+<li>[ ] Register device for notification</li>
+<li>[ ] Deregister device for notification</li>
+</ul>
+</li>
+<li>[ ] Chat<ul>
+<li>[x] Create</li>
+<li>[x] Get one</li>
+<li>[x] Get all</li>
+<li>[ ] <strong>Update chat info</strong></li>
+<li>[ ] <strong>Delete chat</strong></li>
+<li>[x] Generate guest url</li>
+<li>[ ] <strong>Mark as read</strong></li>
+<li>[x] Add user to group</li>
+<li>[x] Remove user from group</li>
+<li>[ ] Messages<ul>
+<li>[x] Send/recieve messages</li>
+<li>[ ] Send file by URL</li>
+<li>[ ] <strong>Send file by data</strong></li>
+<li>[ ] Translate message</li>
+<li>[ ] <strong>Get unread</strong></li>
+</ul>
+</li>
+<li>[ ] Links<ul>
+<li>[ ] Get links by chat</li>
+<li>[ ] Get links for user</li>
+</ul>
+</li>
+<li>[ ] Files<ul>
+<li>[ ] Get files by chat</li>
+<li>[ ] Get files for user</li>
+<li>[ ] Get file info </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[ ] Integrations<ul>
+<li>[ ] Integration type support:<ul>
+<li>[ ] Google</li>
+<li>[ ] Office365</li>
+<li>[ ] Exchange</li>
+</ul>
+</li>
+<li>[ ] Create integration</li>
+<li>[ ] Update integration</li>
+<li>[ ] Delete integration</li>
+<li>[ ] Contacts<ul>
+<li>[ ] Create contact</li>
+<li>[ ] Update contact</li>
+<li>[ ] Delete contact</li>
+<li>[ ] Get one </li>
+<li>[ ] Get all</li>
+</ul>
+</li>
+<li>[ ] Events<ul>
+<li>[ ] Add event</li>
+<li>[ ] Update event</li>
+<li>[ ] Delete event </li>
+<li>[ ] Get all </li>
+<li>[ ] Get one</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[ ] Billing<ul>
+<li>[ ] Add funds</li>
+<li>[ ] Get overview</li>
+<li>[ ] Get subscriptions</li>
+<li>[ ] Add billing address</li>
+<li>[ ] Get draft invoice PDF</li>
+<li>[ ] Get invoice PDF</li>
+<li>[ ] Credit Cards<ul>
+<li>[ ] Add card</li>
+<li>[ ] Delete card </li>
+<li>[ ] Get all</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-2">
+			<div id="toc" class="col-md-2 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+	<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>
+
+
+	<span class="copyright">
+	Skrumble
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Wed Apr 18th 2018
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
