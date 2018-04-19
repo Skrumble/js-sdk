@@ -1,4 +1,6 @@
 import { Logger } from "./Logger"
+import { APISocket } from './APISocket';
+import axios from 'axios';
 
 
 /**
@@ -125,5 +127,66 @@ export class Guest {
         }
 
     }
+
+
+
+    /**
+     * @summary
+     * Check if a guest exists on a given team. 
+     *
+     * @description
+     * Guests are unique to each team, so a Team or TeamID must also be supplied, and can only
+     * be called after logging-in. This is called automatically by {@link Chat#inviteGuest `Chat.inviteGuest()`}.
+     * 
+     * @param {Object} opts             Options for this request
+     * @param {String} opts.email       Email of the guest to look for
+     * @param {Team|String} opts.team   The team to look for this guest in. Either a Team object or a Team ID
+     *
+     * @returns {Promise}               Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument 
+     *
+     * @example
+     * Guest.exists({ email: "guestuser@example.com", team: myTeam })
+     *   .then((guestExists) => console.log(guestExists ? 'guest exists!' : 'no guest with that email'))
+     *   .catch((err) => console.error(err))
+     */
+    static async exists(opts) {
+
+        let options = Object.assign({}, {
+            email: '',
+            team: '',
+        }, opts);
+
+        let exists_res;
+        let response_code;
+
+        if (!options.email)  throw Error('Guest.exists requires an email (opts.email)');
+        if (!options.team)   throw Error('Guest.exists requires a Team object or a team ID (opts.team)');
+
+        if (typeof options.email != "string")   throw TypeError("Guest.exists email must be a string, received", typeof options.email)
+        if (typeof options.team != "string" && options.team.constructor.name != "Team") {
+            throw TypeError("Guest.exists team must be either a team ID or a Team object, received", typeof options.team);
+        }
+
+        // If user passed a Team object, pull the ID from that
+        if (options.team.constructor.name == "Team") options.team = options.team.id 
+
+
+        try {
+            exists_res = await APISocket.post(`team/${options.team}/guest/exists`, { 
+                emails: [options.email] 
+            });
+        } catch(err) {
+            return new Error(err);
+        }
+
+        if (
+            typeof exists_res == "object" 
+            && Object.prototype.hasOwnProperty.call(exists_res, 'existing')
+        ) {
+            return !!exists_res.existing.length;
+        }
+
+    }
+
 
 }

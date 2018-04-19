@@ -134,7 +134,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-4">line 4</a>
+        <a href="Guest.js.html#sunlight-1-line-6">line 6</a>
 	
 
 	
@@ -269,7 +269,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-49">line 49</a>
+        <a href="Guest.js.html#sunlight-1-line-51">line 51</a>
 	
 
 	
@@ -377,7 +377,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-106">line 106</a>
+        <a href="Guest.js.html#sunlight-1-line-108">line 108</a>
 	
 
 	
@@ -484,7 +484,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-115">line 115</a>
+        <a href="Guest.js.html#sunlight-1-line-117">line 117</a>
 	
 
 	
@@ -591,7 +591,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-67">line 67</a>
+        <a href="Guest.js.html#sunlight-1-line-69">line 69</a>
 	
 
 	
@@ -698,7 +698,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-58">line 58</a>
+        <a href="Guest.js.html#sunlight-1-line-60">line 60</a>
 	
 
 	
@@ -805,7 +805,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-31">line 31</a>
+        <a href="Guest.js.html#sunlight-1-line-33">line 33</a>
 	
 
 	
@@ -912,7 +912,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-22">line 22</a>
+        <a href="Guest.js.html#sunlight-1-line-24">line 24</a>
 	
 
 	
@@ -1019,7 +1019,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-40">line 40</a>
+        <a href="Guest.js.html#sunlight-1-line-42">line 42</a>
 	
 
 	
@@ -1126,7 +1126,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-85">line 85</a>
+        <a href="Guest.js.html#sunlight-1-line-87">line 87</a>
 	
 
 	
@@ -1233,7 +1233,7 @@
 
 	
         <a href="Guest.js.html">Guest.js</a>,
-        <a href="Guest.js.html#sunlight-1-line-96">line 96</a>
+        <a href="Guest.js.html#sunlight-1-line-98">line 98</a>
 	
 
 	
@@ -1250,6 +1250,254 @@
         </dl>
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".exists">exists(opts)</h4>
+    <span class="type-signature">&lt;async, static> </span>
+    
+    
+    <p class="summary"><p>Check if a guest exists on a given team.</p></p>
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Guests are unique to each team, so a Team or TeamID must also be supplied, and can only
+be called after logging-in. This is called automatically by <a href="Chat.html#inviteGuest"><code>Chat.inviteGuest()</code></a>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for this request</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Email of the guest to look for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>team</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Team.html">Team</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The team to look for this guest in. Either a Team object or a Team ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-152">line 152</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">Guest.exists({ email: &quot;guestuser@example.com&quot;, team: myTeam })
+  .then((guestExists) =&gt; console.log(guestExists ? &#x27;guest exists!&#x27; : &#x27;no guest with that email&#x27;))
+  .catch((err) =&gt; console.error(err))</pre>
+
+
+    
+</dd>
+
+        </dl>
     
 
     
