@@ -149,7 +149,7 @@ User objects respectively. Instances of User will emit socket events when inform
 		<ul>
 			<li><a href="User.html#.create"><code>User.create</code></a></li>
 			
-			<li><code>User.invite</code></li>
+			<li><a href="User.html#.invite"><code>User.invite</code></a></li>
 			</ul>
 	</dd>
 	
@@ -3874,6 +3874,339 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
             
 <hr>
 <dt>
+    <h4 class="name" id=".acceptInvite">acceptInvite(opts)</h4>
+    <span class="type-signature">&lt;async, static> </span>
+    
+    
+    <p class="summary"><p>Accepts an invite using the invite token either from the invitation email, or from <a href="User.html#.invite"><code>invite</code></a>.</p></p>
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Accepting also requires a user to assigning missing metadata like the user's name and password. 
+To send an invite, see <a href="User.html#.invite"><code>invite</code></a>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for the request</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>invite_token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The invite token created by <code>invite</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>first_name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The first name of the user</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>last_name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The last name of the user</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Password of the user</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>team</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Team.html">Team</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The team that this invite is for. Either a Team object or a Team ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="User.js.html">User.js</a>,
+        <a href="User.js.html#sunlight-1-line-769">line 769</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Promise that will resolve with the registered user, or rejected with the error as the first argument</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">// Create the invite
+User.invite({ 
+  email: &quot;newuser@example.com&quot;,
+  team: myTeam
+})
+  .then((invite_result) =&gt; {
+    
+    // Now accept the invite
+    User.acceptInvite({
+       invite_token: invite_result.token,
+       first_name: &quot;Jane&quot;,
+       last_name: &quot;Doe&quot;,
+       password: &quot;hunter2&quot;,
+       team: myTeam
+    })
+      .then((invitedUser) =&gt; console.log(&quot;User accepted&quot;, invitedUser);
+      .catch((err) =&gt; console.error(err))
+
+  })
+  .catch((err) =&gt; console.error(err))</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id=".create">create(opts)</h4>
     <span class="type-signature">&lt;async, static> </span>
     
@@ -4292,7 +4625,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-686">line 686</a>
+        <a href="User.js.html#sunlight-1-line-826">line 826</a>
 	
 
 	
@@ -4754,6 +5087,256 @@ email confirmation and setting the password manually</p></p>
     
 
     
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".invite">invite(opts)</h4>
+    <span class="type-signature">&lt;async, static> </span>
+    
+    
+    <p class="summary"><p>Admin-only: creates a user by sending them an email invite.</p></p>
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>The email sent to the user and the resolver for this function will both contain an invite token, 
+which can be used by <a href="User.html#.acceptInvite"><code>acceptInvite</code></a> to complete the invitation process and 
+finish setting-up the user.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for the request</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Email of the user to be invited</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>team</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Team.html">Team</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The team to look for this guest in. Either a Team object or a Team ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="User.js.html">User.js</a>,
+        <a href="User.js.html#sunlight-1-line-688">line 688</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Promise that will resolve with an object representing a successful invite, or rejected with the error as the first argument. Successful invites will have the properties <code>email</code>, <code>user_id</code>, and <code>token</code> which is the email token needed for <a href="User.html#.acceptInvite"><code>acceptInvite</code></a>.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">User.invite({ 
+  email: &quot;newuser@example.com&quot;,
+  team: myTeam
+})
+  .then((invite_result) =&gt; {
+    console.log(invite_result.email, invite_result.token, invite_result.user_id);
+  })
+  .catch((err) =&gt; console.error(err))</pre>
+
 
     
 </dd>

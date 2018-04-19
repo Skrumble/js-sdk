@@ -529,8 +529,6 @@ export class User {
             }
         })
 
-        console.log(save_res);
-
         // Assign in passed values
         if (save_res) {
             for (let [key, value] of Object.entries(save_res)) {
@@ -733,15 +731,155 @@ export class User {
 
     /**
      * @summary
-     * Admin-only: creates a user by sending them an email invite
+     * Admin-only: creates a user by sending them an email invite. 
      *
-     * @ignore
+     * @description
+     * The email sent to the user and the resolver for this function will both contain an invite token, 
+     * which can be used by {@link User.acceptInvite `acceptInvite`} to complete the invitation process and 
+     * finish setting-up the user.
+     *
+     * @param {Object} opts             Options for the request
+     * @param {String} opts.email       Email of the user to be invited
+     * @param {Team|String} opts.team   The team to look for this guest in. Either a Team object or a Team ID
+     *
+     * @returns {Promise}               Promise that will resolve with an object representing a successful invite, or rejected with the error as the first argument. Successful invites will have the properties `email`, `user_id`, and `token` which is the email token needed for {@link User.acceptInvite `acceptInvite`}.
+     *
+     * @example
+     * User.invite({ 
+     *   email: "newuser@example.com",
+     *   team: myTeam
+     * })
+     *   .then((invite_result) => {
+     *     console.log(invite_result.email, invite_result.token, invite_result.user_id);
+     *   })
+     *   .catch((err) => console.error(err))
+     *
      */
-    static invite(opts) {
-        // TODO
-        // POST /team/:id/invite
+    static async invite(opts) {
+
+        let options = Object.assign({}, {
+            email: '',
+            team: ''
+        }, opts);
+
+        if (!options.email)  throw Error('User.invite requires an email (opts.email)');
+        if (!options.team)   throw Error('User.invite requires a Team object or a team ID (opts.team)');
+
+        if (typeof options.email != "string")   throw TypeError("User.invite email must be a string, received", typeof options.email)
+        if (typeof options.team != "string" &amp;&amp; options.team.constructor.name != "Team") {
+            throw TypeError("Guest.exists team must be either a team ID or a Team object, received", typeof options.team);
+        }
+
+        // If user passed a Team object, pull the ID from that
+        if (options.team.constructor.name == "Team") options.team = options.team.id; 
+
+        let user_exists;
+        let user_res;
+
+        // Check to see if the owner already exists
+        try {
+            user_exists = await User.exists(options.email); 
+        } catch (err) {
+            throw Error(err);
+        }
+    
+        if (user_exists) { 
+            throw Error(`User.invite can't use an existing email, ${options.email} is already in use`);
+        }
+
+        try {
+            user_res = await APISocket.post(`team/${options.team}/invite`, Array({ email: options.email }) );
+        } catch (err) {
+            throw Error(err);
+        }
+
+        return user_res[0];
+
     }
 
+    /**
+     * @summary
+     * Accepts an invite using the invite token either from the invitation email, or from {@link User.invite `invite`}.
+     *
+     * @description
+     * Accepting also requires a user to assigning missing metadata like the user's name and password. 
+     * To send an invite, see {@link User.invite `invite`}.
+     *
+     * @param {Object} opts                 Options for the request
+     * @param {String} opts.invite_token    The invite token created by {@link User#invite `invite`}
+     * @param {String} opts.first_name      The first name of the user
+     * @param {String} opts.last_name       The last name of the user
+     * @param {String} opts.password        Password of the user
+     * @param {Team|String} opts.team       The team that this invite is for. Either a Team object or a Team ID
+     *
+     * @returns {Promise}                   Promise that will resolve with the registered user, or rejected with the error as the first argument
+     *
+     * @example
+     * // Create the invite
+     * User.invite({ 
+     *   email: "newuser@example.com",
+     *   team: myTeam
+     * })
+     *   .then((invite_result) => {
+     *     
+     *     // Now accept the invite
+     *     User.acceptInvite({
+     *        invite_token: invite_result.token,
+     *        first_name: "Jane",
+     *        last_name: "Doe",
+     *        password: "hunter2",
+     *        team: myTeam
+     *     })
+     *       .then((invitedUser) => console.log("User accepted", invitedUser);
+     *       .catch((err) => console.error(err))
+     *
+     *   })
+     *   .catch((err) => console.error(err))
+     */
+    static async acceptInvite(opts) {
+
+        let options = Object.assign({}, {
+            invite_token: '',
+            first_name: '',
+            last_name: '',
+            password: '',
+            team: ''
+        }, opts);
+
+        // Check for required fields 
+        if (!options.invite_token)  throw Error('Team.create requires an invite token (opts.invite_token)');
+        if (!options.first_name)    throw Error('Team.create requires a first name (opts.first_name)');
+        if (!options.last_name)     throw Error('Team.create requires a last name (opts.last_name)');
+        if (!options.password)      throw Error('Team.create requires a password (opts.password)');
+        if (!options.team)          throw Error('Team.create requires a Team object or a team ID (opts.team)');
+
+        if (typeof options.invite_token !== "string") throw TypeError(`User.acceptInvite invite_token must be a string, received ${typeof options.invite_token}`);
+        if (typeof options.first_name !== "string") throw TypeError(`User.acceptInvite first_name must be a string, received ${typeof options.first_name}`);
+        if (typeof options.last_name !== "string") throw TypeError(`User.acceptInvite last_name must be a string, received ${typeof options.last_name}`);
+        if (typeof options.password !== "string") throw TypeError(`User.acceptInvite password must be a string, received ${typeof options.password}`);
+        if (typeof options.team != "string" &amp;&amp; options.team.constructor.name != "Team") {
+            throw TypeError("User.acceptInvite team must be either a team ID or a Team object, received", typeof options.team);
+        }
+
+        // If user passed a Team object, pull the ID from that
+        if (options.team.constructor.name == "Team") options.team = options.team.id 
+       
+        let user_res;
+
+        try {
+            user_res = await APISocket.post(`team/${options.team}/accept`, { 
+                token: options.invite_token,
+                first_name: options.first_name,
+                last_name: options.last_name,
+                password: options.password,
+            });
+        } catch (err) {
+            throw Error(err);
+        }
+
+        return new User(user_res);
+
+    }
 
     /**
      * @summary
