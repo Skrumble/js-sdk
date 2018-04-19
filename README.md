@@ -100,7 +100,7 @@ The goal of the SDK is to provide convenient access to the full functionality of
     - [x] Create user (add to team)
     - [x] Update user info
     - [ ] **Invite user**
-    - [ ] Invite guest
+    - [x] Invite guest
     - [x] Get one
     - [x] Get all
     - [x] Check existing

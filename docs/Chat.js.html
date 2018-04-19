@@ -73,6 +73,7 @@
             class="sunlight-highlight-javascript linenums">import { APISocket } from "./APISocket";
 import { Logger } from "./Logger";
 import { User } from "./User";
+import { Guest } from "./Guest";
 import { ChatMessage } from "./ChatMessage";
 
 /**
@@ -760,6 +761,73 @@ export class Chat {
 
 
      }
+
+    
+    /**
+     * @summary
+     * Invite guest(s) to join a group chat. 
+     *
+     * @description
+     * Guests can only be added to chats with the {@link Chat#type `type`} of group, can only access the chat they're added to, and will be removed if {@link Chat#generateGuestURL `generateGuestURL`} is called again.
+     *
+     * @param {String|Array} emails     Either a single email address, or an array of email addresses to send guest invites to
+     *
+     * @returns {Promise}               Promise that will be resolved with the result of the invite, or rejected with the error as the first argument.
+     *
+     * @example
+     * Chat.get({ id: "abc123" })
+     *   .then((chat) => {
+     *     // Send one invite
+     *     chat.inviteGuest("myguest1@example.com")
+     *
+     *     // Send multiple invites
+     *     chat.inviteGuest(["myguest2@example.com", "myguest3@example.com"]);
+     *   })
+     */
+    async inviteGuest(emails = []) {
+
+        if (!emails) throw Error("Chat.inviteGuest requires a list of emails");
+        if (!Array.isArray(emails) &amp;&amp; typeof emails != 'string') throw TypeError("Chat.inviteGuest requires an array or string, received", typeof emails);
+
+        // User supplied a string; make an array for them
+        if (!Array.isArray(emails)) emails = [emails]; 
+
+        let add_response;
+
+        // Check to see if the owner already exists
+        for (let i = 0; i &lt; emails.length; i++) {
+            let guest_exists;
+            try {
+                guest_exists = await Guest.exists({ 
+                    email: emails[i], 
+                    team: this.team 
+                }) 
+            } catch (err) {
+                throw Error(err);
+            }
+            if (guest_exists) throw Error(`Chat.inviteGuest can't invite existing guests, ${emails[i]} is already in use`);
+        }
+
+        try {
+            add_response = await APISocket.post(`guest/invite`, {
+                chat: this.id,
+                emails
+            })
+        } catch (err) {
+            throw new Error(err);
+        }
+
+        if (
+            typeof add_response == "object" 
+            &amp;&amp; Array.isArray(add_response)
+            &amp;&amp; add_response.length > 0
+        ) {
+            return add_response;
+        } else {
+            throw new Error("Problem inviting guest, received", add_response)
+        }
+
+    }
 
 
     /**
