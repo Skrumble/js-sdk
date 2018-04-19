@@ -95,7 +95,7 @@ The SDK currently uses mocha/chai as a testing suite. `npm run test` will run th
 The goal of the SDK is to provide convenient access to the full functionality of the [Skrumble REST API](http://developers.skrumble.com/knowledge-base/skrumble-rest-api/). For maintainers/contributors, unchecked items below are unimplemented, and therefore a good place to start contributing. **Bold items** are high-priority features. See our list of [Github Issues](https://github.com/Skrumble/js-sdk/issues) for information about individual features.
 
 - [ ] Teams
-    - [ ] **Create team**
+    - [x] Create team
     - [ ] Update team info
 - [ ] Users
     - [x] Create user (add to team)
