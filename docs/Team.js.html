@@ -315,6 +315,7 @@ export class Team {
             referral_code: ""
         }, opts);
 
+        let team_exists;
         let owner_exists;
         let owner_res;
         let team_res;
@@ -339,7 +340,14 @@ export class Team {
         if (typeof options.city !== "string") throw TypeError(`Team.create city must be a string, received ${typeof options.city}`);
         if (typeof options.state !== "string") throw TypeError(`Team.create state must be a string, received ${typeof options.state}`);
 
+        // Check to see if the team already exists
+        try {
+            team_exists = await Team.exists(options.name) 
+        } catch (err) {
+            throw Error(err);
+        }
 
+        if (team_exists) throw Error(`Team.create can't use an existing team name, ${options.name} is already in use`) 
 
         // Check to see if the owner already exists
         try {
@@ -349,7 +357,7 @@ export class Team {
         }
     
         if (owner_exists) { 
-            throw Error("Team.create can't use an existing owner");
+            throw Error(`Team.create can't use an existing owner, ${options.owner_email} is already in use`);
         } else {
 
             // First create the team owner
@@ -394,6 +402,50 @@ export class Team {
 
     }
 
+
+
+    /**
+    /**
+     * @summary
+     * Check if a team exists, in order to create one safely. This is called automatically during Team.create() 
+     * 
+     * @param {String} team_name        Team name to check the existence of  
+     * @returns {Promise}           Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument 
+     *
+     * @example
+     * Team.exists("My team name")
+     *   .then((teamExists) => console.log(teamExists ? 'team exists!' : 'no team with that name'))
+     *   .catch((err) => console.error(err))
+     */
+    static async exists(team_name = "") {
+
+        let exists_res;
+        let response_code;
+
+        if (!team_name) Logger.error("Team.exists requires a team name");
+        if (typeof team_name !== "string") throw TypeError(`Team.exists team name must be a string, received ${typeof team_name}`);
+
+        try {
+            exists_res = await axios.post(`${APISocket.api_url}/v3/team/exist`, { team_name });
+        } catch(err) {
+            return new Error(err);
+        }
+
+        response_code = parseInt(exists_res.status, 10);
+
+        if (Math.floor(response_code / 100) === 2) { 
+            if (
+                typeof exists_res.data == "object" 
+                &amp;&amp; Object.prototype.hasOwnProperty.call(exists_res.data, 'exists')
+            ) {
+                return !!exists_res.data.exists;
+            }
+        } else {
+            return false;
+        }
+
+
+    }
 
 
 
