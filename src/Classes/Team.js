@@ -1,8 +1,7 @@
 import { APISocket } from "./APISocket";
 import { Logger } from "./Logger";
-
-(async function loadDependencies() {
-})()
+import { User } from "./User";
+import axios from 'axios'; 
 
 /**
  * @class Team
@@ -179,9 +178,151 @@ export class Team {
         }, opts);
 
         var team = await APISocket.get(`team/${options.id}?populate=departments&users=true`)
-        console.log('team is', team);
         return new Team(team);
 
     }
+
+
+    /**
+     * @summary
+     * Creates a team
+     *
+     * @description
+     * Creates a team by first creating an Owner account, who is the first user
+     * on the team. Then creates the team and assigns the Owner to it. NB: Team names are unique 
+     *
+     * @param {Object} opts                     Options for the request
+     * @param {String} opts.owner_first_name    Owner's first name
+     * @param {String} opts.owner_last_name     Owner's last name
+     * @param {String} opts.owner_email         Owner's email. Used later for authentication and cannot be changed.
+     * @param {String} opts.owner_password      Owner's password
+     * @param {String} opts.name                Name of the team
+     * @param {String} opts.country             Team country
+     * @param {String} opts.city                Team city
+     * @param {String} opts.state               Team state
+     * @param {String} [opts.referral_code]     Referral code, if any
+     *
+     * @returns {Promise} Promise that will resolve with the newly created team if the team creation was successful, and be rejected with an error as the first argument if the attempt fails  
+     *
+     * @example
+     * let owner_email = "owner@example.com";
+     * let owner_password = "hunter2";
+     *
+     * Team.create({
+     *   owner_first_name: "jane",
+     *   owner_last_name: "doe",
+     *   owner_email,
+     *   owner_password,
+     *   name: "My SDK Team",
+     *   country: "Canada",
+     *   city: "Toronto",
+     *   state: "ON"
+     * })
+     *   .then((newTeam) => {
+     *     console.log("new team created", newTeam);
+     *
+     *     // You can log-in now as the owner
+     *     APISocket.login({ 
+     *       email: owner_email,
+     *       password: owner_password
+     *     })
+     *   })
+     *   .catch((err) => console.error("team creation err", err))
+     */
+    static async create(opts) {
+
+        var options = Object.assign({}, {
+            owner_first_name: "",
+            owner_last_name: "",
+            owner_email: "",
+            owner_password: "",
+            name: "",
+            country: "",
+            city: "",
+            state: "",
+            referral_code: ""
+        }, opts);
+
+        let owner_exists;
+        let owner_res;
+        let team_res;
+
+        // Check for required fields 
+        if (!options.owner_first_name)  throw Error("Team.create requires an owner first name (opts.owner_first_name)");
+        if (!options.owner_last_name)   throw Error("Team.create requires an owner last name (opts.owner_last_name)");
+        if (!options.owner_email)       throw Error("Team.create requires an owner email (opts.owner_email)");
+        if (!options.owner_password)    throw Error("Team.create requires an owner password (opts.owner_password)");
+        if (!options.name)              throw Error("Team.create requires a team name (opts.name)");
+        if (!options.country)           throw Error("Team.create requires a team country (opts.country)");
+        if (!options.city)              throw Error("Team.create requires a team city (opts.city)");
+        if (!options.state)             throw Error("Team.create requires a team state (opts.state)");
+
+        // Type-check fields
+        if (typeof options.owner_first_name !== "string") throw TypeError(`Team.create owner_first_name must be a string, received ${typeof options.owner_first_name}`);
+        if (typeof options.owner_last_name !== "string") throw TypeError(`Team.create owner_last_name must be a string, received ${typeof options.owner_last_name}`);
+        if (typeof options.owner_email !== "string") throw TypeError(`Team.create owner_email must be a string, received ${typeof options.owner_email}`);
+        if (typeof options.owner_password !== "string") throw TypeError(`Team.create owner_email must be a string, received ${typeof options.owner_email}`);
+        if (typeof options.name !== "string") throw TypeError(`Team.create name must be a string, received ${typeof options.name}`);
+        if (typeof options.country !== "string") throw TypeError(`Team.create country must be a string, received ${typeof options.country}`);
+        if (typeof options.city !== "string") throw TypeError(`Team.create city must be a string, received ${typeof options.city}`);
+        if (typeof options.state !== "string") throw TypeError(`Team.create state must be a string, received ${typeof options.state}`);
+
+
+
+        // Check to see if the owner already exists
+        try {
+            owner_exists = await User.exists(options.owner_email) 
+        } catch (err) {
+            throw Error(err);
+        }
+    
+        if (owner_exists) { 
+            throw Error("Team.create can't use an existing owner");
+        } else {
+
+            // First create the team owner
+            try {
+                owner_res = await axios.post(`${APISocket.api_url}/v3/user`, {
+                    first_name: options.owner_first_name,
+                    last_name: options.owner_last_name,
+                    email: options.owner_email,
+                    password: options.owner_password,
+                }); 
+            } catch(err) {
+                throw Error(err);
+            }
+
+            // If the owner was created, create the team
+            if (parseInt(owner_res.status, 10) === 201) { 
+                try {
+                    team_res = await axios.post(`${APISocket.api_url}/v3/team`, {
+                        team_name: options.name,
+                        owner: owner_res.data.id,
+                        country: options.country,
+                        city: options.city,
+                        state: options.state,
+                        ref: options.referral_code,
+                    });
+                } catch(err) {
+                    throw Error(err);
+                }
+
+                if (parseInt(team_res.status, 10) === 201) { 
+                    return new Team(team_res.data);
+                } else {
+                    throw Error(`Team.create failed to create a Team. Error ${team_res.status}: ${team_res.statusText}`)
+                }
+
+            } else {
+                // Owner wasn't created properly
+                throw Error(`Team.create failed to create a Team owner. Error ${owner_res.status}: ${owner_res.statusText}`)
+            }
+
+        }
+
+    }
+
+
+
 
 }
