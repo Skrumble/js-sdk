@@ -32,6 +32,8 @@ export * from "./Classes/Logger";
 export * from "./Classes/APISocket";
 export * from "./Classes/User";
 export * from "./Classes/Chat";
+export * from "./Classes/Team";
+export * from "./Classes/Guest";
 
 
 import { APISocket } from "./Classes/APISocket"
