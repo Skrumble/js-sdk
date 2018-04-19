@@ -95,7 +95,7 @@ The goal of the SDK is to provide convenient access to the full functionality of
 
 - [ ] Teams
     - [x] Create team
-    - [ ] Update team info
+    - [x] Update team info
 - [ ] Users
     - [x] Create user (add to team)
     - [x] Update user info

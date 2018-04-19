@@ -3,6 +3,26 @@ import { Logger } from "./Logger";
 import { User } from "./User";
 import axios from 'axios'; 
 
+
+/**
+ * Fields that can be edited after creating a team
+ *
+ * @ignore
+ */
+let editable_fields = [
+    'team_name', 
+    'country',
+    'city',
+    'state',
+    'address_1',
+    'address_2',
+    'postal',
+    'timezone',
+    'caller_id_name',
+    'caller_id_number',
+];
+
+
 /**
  * @class Team
  * @classdesc
@@ -333,6 +353,50 @@ export class Team {
 
 
     /**
+     * @summary
+     * Admin-only: save any changed information about a Team. The original team object will be modified in-place
+     * with whatever values are applied successfully, and a copy will be passed into the promise.
+     *
+     * @returns {Promise} Promise that will resolve with the updated Team as the first argument, or rejected with the error as the first argument 
+     *
+     * @example
+     * let me = await APISocket.login({ ...opts })
+     * let myTeam = me.teams[0];
+     *
+     * myTeam.team_name = "New team name";
+     * myTeam.city = "Toronto";
+     * myTeam.save()
+     *   .then((myTeam) => console.log("Updated myTeam", myTeam))
+     *   .catch((err) => console.error("Team save error", err))
+     */
+    async save() {
+
+        let save_res; 
+
+        if (!this.id) throw Error("Team.save must be run on a User object with an ID");
+
+        // Only send the params this request that can be edited 
+        let request_options = _.pick(this, editable_fields);
+
+        // Send updated values to API 
+        try {
+            save_res = await APISocket.patch(`team/${this.id}`, request_options);
+        } catch (err) {
+            throw Error(err);
+        }
+
+        // Assign in passed values
+        if (save_res) {
+            for (let [key, value] of Object.entries(save_res)) {
+                if (this.hasOwnProperty(key))  this[key] = value;  
+            }
+        }
+
+        return this;
+
+    }
+
+
     /**
      * @summary
      * Check if a team exists, in order to create one safely. This is called automatically during Team.create() 
