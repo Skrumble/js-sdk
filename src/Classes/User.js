@@ -1,5 +1,6 @@
 import { APISocket } from "./APISocket";
 import { Logger } from "./Logger";
+import axios from 'axios';
 import  _  from 'lodash';
 
 /**
@@ -657,25 +658,43 @@ export class User {
 
     /**
      * @summary
-     * Check if a user exists, in order to create one safely
+     * Check if a user exists, in order to create one safely.  
      * 
-     * @param {Object} opts     Options for the request
-     * @param {Object} opts.email 
-     * @returns {Boolean}   `true` if the user exists, or `false` if not
+     * @param {String} email        Email address to check the existence of  
+     * @returns {Promise}           Promise that will resolve with a boolean representing if a user exists or not, or rejected with the error as the first argument 
+     *
+     * @example
+     * User.exists("existinguser@example.com")
+     *   .then((userExists) => console.log(userExists ? 'user exists!' : 'no user with that email'))
+     *   .catch((err) => console.error(err))
      */
-    static exists(opts) {
+    static async exists(email = "") {
 
-        let options = Object.assign({}, {
-            email: false
-        }, opts);
+        let exists_res;
+        let response_code;
 
-        if (!options.email) Logger.error("User.exists requires an email address");
+        if (!email) Logger.error("User.exists requires an email address");
+        if (typeof email !== "string") throw TypeError(`User.exists email must be a string, received ${typeof email}`);
 
         try {
-
+            exists_res = await axios.post(`${APISocket.api_url}/v3/user/exist`, { email });
         } catch(err) {
-
+            return new Error(err);
         }
+
+        response_code = parseInt(exists_res.status, 10);
+
+        if (Math.floor(response_code / 100) === 2) { 
+            if (
+                typeof exists_res.data == "object" 
+                && Object.prototype.hasOwnProperty.call(exists_res.data, 'exists')
+            ) {
+                return !!exists_res.data.exists;
+            }
+        } else {
+            return false;
+        }
+
 
     }
 
