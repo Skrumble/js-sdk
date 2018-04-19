@@ -245,7 +245,18 @@ export class APISocket {
 
             if (options.connect_socket &amp;&amp; this.access_token &amp;&amp; this.refresh_token) {
                 var SocketRegistered = await this.connectSocket();
-                this.current_user = new User(await this.loadCurUser());
+                let cur_user = new User(await this.loadCurUser());
+                let user_teams = [];
+
+                // Load all teams by ID
+                for (var i = 0; i &lt; cur_user.teams.length; i++) {
+                    let team = await Team.get({ id: cur_user.teams[i].id })
+                    user_teams.push(team);
+                }
+
+                cur_user.teams = user_teams;
+                this.current_user = cur_user;
+
             } else {
                 throw new Error("Socket registration failed", auth_result);
             }
@@ -355,12 +366,6 @@ export class APISocket {
             }
 
         }
-
-        // Load all teams by ID
-        user_result.teams.map(async (team_props) => {
-            var team = await Team.get({ id: team_props.id });
-            user_result.teams.push(team);
-        })
 
         // Rename/remap fields
         user_result.extension_secret = (" " + user_result.extensionSecret).slice(1);

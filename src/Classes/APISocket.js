@@ -173,7 +173,18 @@ export class APISocket {
 
             if (options.connect_socket && this.access_token && this.refresh_token) {
                 var SocketRegistered = await this.connectSocket();
-                this.current_user = new User(await this.loadCurUser());
+                let cur_user = new User(await this.loadCurUser());
+                let user_teams = [];
+
+                // Load all teams by ID
+                for (var i = 0; i < cur_user.teams.length; i++) {
+                    let team = await Team.get({ id: cur_user.teams[i].id })
+                    user_teams.push(team);
+                }
+
+                cur_user.teams = user_teams;
+                this.current_user = cur_user;
+
             } else {
                 throw new Error("Socket registration failed", auth_result);
             }
@@ -238,11 +249,9 @@ export class APISocket {
             data: options
         })
 
-        console.log("Guest user result", auth_result);
 
         if (Math.floor(auth_result.status/100) !== 2) { 
-            console.log(auth_result);
-            // throw new Error(err);
+            throw new Error(err);
         } else {
 
             if (auth_result.data.access_token) this.access_token = auth_result.data.access_token;
@@ -250,8 +259,18 @@ export class APISocket {
 
             if (this.access_token && this.refresh_token) {
                 var SocketRegistered = await this.connectSocket();
-                this.current_user = new Guest(await this.loadCurUser());
-                console.log("Guest user set", this.current_user);
+                let cur_user = new Guest(await this.loadCurUser());
+                let user_teams = [];
+
+                // Load all teams by ID
+                for (var i = 0; i < cur_user.teams.length; i++) {
+                    let team = await Team.get({ id: cur_user.teams[i].id })
+                    user_teams.push(team);
+                }
+
+                cur_user.teams = user_teams;
+                this.current_user = cur_user;
+
             } else {
                 throw new Error("Socket registration failed", auth_result);
             }
@@ -283,12 +302,6 @@ export class APISocket {
             }
 
         }
-
-        // Load all teams by ID
-        user_result.teams.map(async (team_props) => {
-            var team = await Team.get({ id: team_props.id });
-            user_result.teams.push(team);
-        })
 
         // Rename/remap fields
         user_result.extension_secret = (" " + user_result.extensionSecret).slice(1);
