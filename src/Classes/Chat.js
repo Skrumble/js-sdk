@@ -758,6 +758,41 @@ export class Chat {
 
     /**
      * @summary
+     * Marks a chat as read by updating the {@linkcode Chat#last_seen last_seen} with the current time.
+     *
+     * @description
+     * This can be any chat that the user has access to. The original chat will be updated
+     * in-place with any successfully applied values, and a copy will also be passed into the
+     * promise.
+     *
+     * @returns {Promise}   Promise that will resolve with the updated Chat as the first argument,
+     * or rejected with the error as the first argument
+     */
+    async markAsRead() {
+
+        let read_res;
+
+        try {
+            read_res = await APISocket.post(`chat/${this.id}/seen`);
+        } catch (err) {
+            throw Error(err);
+        }
+
+        if (read_res && typeof read_res[0] == "object") {
+            for (let [key, value] of Object.entries(read_res[0])) {
+                if (this.hasOwnProperty(key)) this[key] = value;
+            }
+        } else {
+            throw Error("markAsRead failed, response", read_res);
+        }
+
+        return this;
+        
+    }
+
+
+    /**
+     * @summary
      * Listen for changes to this chat coming in over the APISocket.
      *
      * @description
