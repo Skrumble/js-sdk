@@ -3,13 +3,13 @@ import { Logger } from "./Logger";
 import { User } from "./User";
 import { Guest } from "./Guest";
 
-(async function loadDependencies() {
-})()
 
 /**
  * @class ChatMessage
  * @classdesc
- * ChatMessage instances describe individual messages inside a {@link Chat}
+ * ChatMessages describe individual messages inside a {@link Chat}. This can be simple messages like 
+ * text or files, or events like a user joining a group. For more information about the various types
+ * of ChatMessages and how to handle them, see {@link ChatMessage#type `type`}.
  */
 export class ChatMessage {
 
@@ -151,6 +151,41 @@ export class ChatMessage {
             }
         }
 
+
+    }
+
+
+    /**
+     * @summary
+     * Translates a message and returns the translation.
+     *
+     * @description
+     * Languages for the translation are automatic and based on the `language` property of the user sending the message, and the user performing the translation. For example, if a user with the `language` of `es` sends a message, and the current user has a language of `fr`, then this will attempt to translate from Spanish to French. This will only work on messages with the `type` of `text`
+     * @see {@linkcode User#language User.language}
+     *
+     * @returns {Promise} Promise that will resolve with the translation as the first argument
+     *
+     * @example 
+     * ChatMessage.translate()
+     *   .then((translation) => {
+     *     console.log(translation);
+     *   })
+     */
+    async translate() {
+
+        if (!this.id) throw TypeError("ChatMessage.translate can only be called on a ChatMessage with an id");
+        if (!this.chat) throw TypeError("ChatMessage.translate can only be called on a ChatMessage with an associated chat");
+        if (this.type !== 'text') throw TypeError("ChatMessage.translate can only be called on ChatMessages with the type of 'text'");
+
+        let translate_res;
+
+        try {
+            translate_res = await APISocket.get(`chat/${this.chat}/messages/${this.id}/translate`)
+        } catch (err) {
+            throw Error(err);
+        }
+
+        return translate_res;
 
     }
 

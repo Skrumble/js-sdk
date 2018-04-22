@@ -123,8 +123,8 @@ The goal of the SDK is to provide convenient access to the full functionality of
         - [x] Send/recieve messages
         - [ ] Send file by URL
         - [ ] **Send file by data**
-        - [ ] Translate message
         - [ ] **Get unread**
+        - [x] Translate message
     - [ ] Links
         - [ ] Get links by chat
         - [ ] Get links for user
