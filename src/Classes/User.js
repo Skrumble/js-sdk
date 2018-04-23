@@ -37,7 +37,8 @@ let editable_fields = [
 
 
 /**
- * @class User
+ * @class 
+ * @hideconstructor
  * @classdesc 
  * The User class allows read access to user information. It's also possible to update User information with {@link User#save `save()`} if the User you're editing is yourself, or 
  * if you're logged-in as an Admin. Static methods like {@link User#get `get()`} or {@link User#create `create()`} won't work on User instances, but will retrieve or create 
@@ -47,17 +48,7 @@ let editable_fields = [
  * A Skrumble Team Member.
  *
  *
- * @example <caption>new User won't create users</caption>
- * var testUser = new User({ 
- *    first_name "test", 
- *    last_name: "user" 
- * });
- *
- * testUser.save(); // Returns error! Users must be created using 
- *                  // static method User.create
- *
- *
- * @example <caption>Proper way to create a user</caption>
+ * @example 
  * var workingUser = User.create({
  *      email: "user@example.com",  // Required
  *      plan: "pro",                // Required
@@ -66,7 +57,7 @@ let editable_fields = [
  * })
  *
  * // Listen for events
- * workingUser.on("change", function() {
+ * workingUser.on("change", () => {
  *      console.log(workingUser, "has been updated!");
  * });
  *
@@ -177,10 +168,13 @@ export class User {
      * @prop language
      * @type {String}
      * @summary
-     * The user's preferred interface language. 
+     * The user's preferred language. 
      *
      * @description
-     * Currently this only modifies the interface language of app.skrumble.com, API responses won't be translated. Supported options are `en` and `es`
+     * Used for comparison when calling {@link ChatMessage#translate `ChatMessage.translate`}. Also used 
+     * by official Skrumble clients to determine interface language.
+     *
+     * @see [List of ISO-639-1 codes - Wikipedia]{@link https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes}
      */
     language = "en"
 

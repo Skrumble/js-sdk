@@ -5,7 +5,8 @@ import { Guest } from "./Guest";
 import { ChatMessage } from "./ChatMessage";
 
 /**
- * @class Chat
+ * @class  
+ * @hideconstructor
  * @classdesc
  * A chat comes in two major types (see the `type` property):
  *

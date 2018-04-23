@@ -4,7 +4,8 @@ import axios from 'axios';
 
 
 /**
- * @class Guest
+ * @class 
+ * @hideconstructor
  * @classdesc
  * Guests are temporary users that are granted access to one group {@link Chat} using the chat's {@link Chat#guest_url guest URL}. 
  */

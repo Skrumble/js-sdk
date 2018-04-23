@@ -24,12 +24,10 @@ let editable_fields = [
 
 
 /**
- * @class Team
+ * @class 
+ * @hideconstructor
  * @classdesc
  * The settings and info for a team. 
- *
- * @summary
- * Creates a team object
  *
  */
 export class Team {
@@ -435,7 +433,6 @@ export class Team {
         } else {
             return false;
         }
-
 
     }
 

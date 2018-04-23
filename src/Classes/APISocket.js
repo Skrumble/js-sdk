@@ -10,11 +10,9 @@ import { removeTrailingSlash } from "../Skrumble";
 
 /**
  * @class 
+ * @hideconstructor
  * @classdesc
  * Allows connection to the Skrumble API through a persistent socket connection. Many other classes like {@link User}, {@link Chat}, and {@link Department} rely on APISocket to make requests.  
- *
- * @example
- * something
  */
 export class APISocket {
 
@@ -121,7 +119,7 @@ export class APISocket {
      * @static
      *
      * @example
-     * Skrumble.APISocket.login({
+     * APISocket.login({
      *    email: "myuser@gmail.com",
      *    password: "123456"
      * })

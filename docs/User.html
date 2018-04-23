@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Department.html">Department</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li><li><a href="Workspace.html">Workspace</a></li>
 				</ul>
 			</li>
 			
@@ -88,11 +88,6 @@ User objects respectively. Instances of User will emit socket events when inform
         
 <hr>
 <dt>
-    <h4 class="name" id="User">new User()</h4>
-    
-    
-    
-    <p class="summary"><p>A Skrumble Team Member.</p></p>
     
 </dt>
 <dd>
@@ -138,7 +133,7 @@ User objects respectively. Instances of User will emit socket events when inform
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-39">line 39</a>
+        <a href="User.js.html#sunlight-1-line-71">line 71</a>
 	
 
 	
@@ -171,20 +166,8 @@ User objects respectively. Instances of User will emit socket events when inform
     
 
     
-        <h5>Examples</h5>
+        <h5>Example</h5>
         
-        <p class="code-caption">new User won't create users</p>
-    
-    <pre class="sunlight-highlight-javascript">var testUser = new User({ 
-   first_name &quot;test&quot;, 
-   last_name: &quot;user&quot; 
-});
-
-testUser.save(); // Returns error! Users must be created using 
-                 // static method User.create</pre>
-
-        <p class="code-caption">Proper way to create a user</p>
-    
     <pre class="sunlight-highlight-javascript">var workingUser = User.create({
      email: &quot;user@example.com&quot;,  // Required
      plan: &quot;pro&quot;,                // Required
@@ -193,7 +176,7 @@ testUser.save(); // Returns error! Users must be created using
 })
 
 // Listen for events
-workingUser.on(&quot;change&quot;, function() {
+workingUser.on(&quot;change&quot;, () =&gt; {
      console.log(workingUser, &quot;has been updated!&quot;);
 });
 
@@ -314,7 +297,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-378">line 378</a>
+        <a href="User.js.html#sunlight-1-line-372">line 372</a>
 	
 
 	
@@ -421,7 +404,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-138">line 138</a>
+        <a href="User.js.html#sunlight-1-line-129">line 129</a>
 	
 
 	
@@ -529,7 +512,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-297">line 297</a>
+        <a href="User.js.html#sunlight-1-line-291">line 291</a>
 	
 
 	
@@ -636,7 +619,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-306">line 306</a>
+        <a href="User.js.html#sunlight-1-line-300">line 300</a>
 	
 
 	
@@ -743,7 +726,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-231">line 231</a>
+        <a href="User.js.html#sunlight-1-line-225">line 225</a>
 	
 
 	
@@ -850,7 +833,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-212">line 212</a>
+        <a href="User.js.html#sunlight-1-line-206">line 206</a>
 	
 
 	
@@ -957,7 +940,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-396">line 396</a>
+        <a href="User.js.html#sunlight-1-line-390">line 390</a>
 	
 
 	
@@ -1064,7 +1047,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-122">line 122</a>
+        <a href="User.js.html#sunlight-1-line-113">line 113</a>
 	
 
 	
@@ -1169,7 +1152,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-240">line 240</a>
+        <a href="User.js.html#sunlight-1-line-234">line 234</a>
 	
 
 	
@@ -1276,7 +1259,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-98">line 98</a>
+        <a href="User.js.html#sunlight-1-line-89">line 89</a>
 	
 
 	
@@ -1383,7 +1366,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-278">line 278</a>
+        <a href="User.js.html#sunlight-1-line-272">line 272</a>
 	
 
 	
@@ -1490,7 +1473,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-287">line 287</a>
+        <a href="User.js.html#sunlight-1-line-281">line 281</a>
 	
 
 	
@@ -1597,7 +1580,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-324">line 324</a>
+        <a href="User.js.html#sunlight-1-line-318">line 318</a>
 	
 
 	
@@ -1704,7 +1687,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-90">line 90</a>
+        <a href="User.js.html#sunlight-1-line-81">line 81</a>
 	
 
 	
@@ -1726,13 +1709,14 @@ workingUser.save();</pre>
      <span class="type-signature">String</span>
 
     
-    <p class="summary"><p>The user's preferred interface language.</p></p>
+    <p class="summary"><p>The user's preferred language.</p></p>
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Currently this only modifies the interface language of app.skrumble.com, API responses won't be translated. Supported options are <code>en</code> and <code>es</code></p>
+        <p>Used for comparison when calling <a href="ChatMessage.html#translate"><code>ChatMessage.translate</code></a>. Also used 
+by official Skrumble clients to determine interface language.</p>
     </div>
     
 
@@ -1815,11 +1799,18 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-185">line 185</a>
+        <a href="User.js.html#sunlight-1-line-179">line 179</a>
 	
 
 	
 
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p><a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">List of ISO-639-1 codes - Wikipedia</a></p></li>
+			</ul>
+	</dd>
 	
 
 	
@@ -1922,7 +1913,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-387">line 387</a>
+        <a href="User.js.html#sunlight-1-line-381">line 381</a>
 	
 
 	
@@ -2029,7 +2020,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-106">line 106</a>
+        <a href="User.js.html#sunlight-1-line-97">line 97</a>
 	
 
 	
@@ -2136,7 +2127,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-351">line 351</a>
+        <a href="User.js.html#sunlight-1-line-345">line 345</a>
 	
 
 	
@@ -2243,7 +2234,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-360">line 360</a>
+        <a href="User.js.html#sunlight-1-line-354">line 354</a>
 	
 
 	
@@ -2350,7 +2341,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-333">line 333</a>
+        <a href="User.js.html#sunlight-1-line-327">line 327</a>
 	
 
 	
@@ -2457,7 +2448,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-130">line 130</a>
+        <a href="User.js.html#sunlight-1-line-121">line 121</a>
 	
 
 	
@@ -2564,7 +2555,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-173">line 173</a>
+        <a href="User.js.html#sunlight-1-line-164">line 164</a>
 	
 
 	
@@ -2671,7 +2662,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-114">line 114</a>
+        <a href="User.js.html#sunlight-1-line-105">line 105</a>
 	
 
 	
@@ -2778,7 +2769,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-164">line 164</a>
+        <a href="User.js.html#sunlight-1-line-155">line 155</a>
 	
 
 	
@@ -2886,7 +2877,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-147">line 147</a>
+        <a href="User.js.html#sunlight-1-line-138">line 138</a>
 	
 
 	
@@ -2993,7 +2984,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-155">line 155</a>
+        <a href="User.js.html#sunlight-1-line-146">line 146</a>
 	
 
 	
@@ -3100,7 +3091,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-259">line 259</a>
+        <a href="User.js.html#sunlight-1-line-253">line 253</a>
 	
 
 	
@@ -3207,7 +3198,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-369">line 369</a>
+        <a href="User.js.html#sunlight-1-line-363">line 363</a>
 	
 
 	
@@ -3314,7 +3305,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-203">line 203</a>
+        <a href="User.js.html#sunlight-1-line-197">line 197</a>
 	
 
 	
@@ -3421,7 +3412,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-194">line 194</a>
+        <a href="User.js.html#sunlight-1-line-188">line 188</a>
 	
 
 	
@@ -3528,7 +3519,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-221">line 221</a>
+        <a href="User.js.html#sunlight-1-line-215">line 215</a>
 	
 
 	
@@ -3636,7 +3627,7 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-269">line 269</a>
+        <a href="User.js.html#sunlight-1-line-263">line 263</a>
 	
 
 	
@@ -3743,7 +3734,7 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-342">line 342</a>
+        <a href="User.js.html#sunlight-1-line-336">line 336</a>
 	
 
 	
@@ -3850,7 +3841,7 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-315">line 315</a>
+        <a href="User.js.html#sunlight-1-line-309">line 309</a>
 	
 
 	
@@ -3874,11 +3865,14 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
             
 <hr>
 <dt>
-    <h4 class="name" id=".acceptInvite">acceptInvite(opts)</h4>
-    <span class="type-signature">&lt;async, static> </span>
     
-    
-    <p class="summary"><p>Accepts an invite using the invite token either from the invitation email, or from <a href="User.html#.invite"><code>invite</code></a>.</p></p>
+        <h4 class="name" id=".acceptInvite">acceptInvite(opts)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Accepts an invite using the invite token either from the invitation email, or from <a href="User.html#.invite"><code>invite</code></a>.</p></p>
+        
     
 </dt>
 <dd>
@@ -4128,7 +4122,7 @@ To send an invite, see <a href="User.html#.invite"><code>invite</code></a>.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-769">line 769</a>
+        <a href="User.js.html#sunlight-1-line-804">line 804</a>
 	
 
 	
@@ -4207,12 +4201,15 @@ User.invite({
             
 <hr>
 <dt>
-    <h4 class="name" id=".create">create(opts)</h4>
-    <span class="type-signature">&lt;async, static> </span>
     
-    
-    <p class="summary"><p>Admin-only: creates a user on a Team without inviting them, bypassing
+        <h4 class="name" id=".create">create(opts)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Admin-only: creates a user on a Team without inviting them, bypassing
 email confirmation and setting the password manually</p></p>
+        
     
 </dt>
 <dd>
@@ -4457,7 +4454,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-631">line 631</a>
+        <a href="User.js.html#sunlight-1-line-666">line 666</a>
 	
 
 	
@@ -4525,11 +4522,14 @@ email confirmation and setting the password manually</p></p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".exists">exists(email)</h4>
-    <span class="type-signature">&lt;async, static> </span>
     
-    
-    <p class="summary"><p>Check if a user exists, in order to create one safely.</p></p>
+        <h4 class="name" id=".exists">exists(email)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Check if a user exists, in order to create one safely.</p></p>
+        
     
 </dt>
 <dd>
@@ -4625,7 +4625,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-826">line 826</a>
+        <a href="User.js.html#sunlight-1-line-861">line 861</a>
 	
 
 	
@@ -4687,11 +4687,14 @@ email confirmation and setting the password manually</p></p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".get">get(opts)</h4>
-    <span class="type-signature">&lt;async, static> </span>
     
-    
-    <p class="summary"><p>Loads a specific user.</p></p>
+        <h4 class="name" id=".get">get(opts)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Loads a specific user.</p></p>
+        
     
 </dt>
 <dd>
@@ -4837,7 +4840,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-587">line 587</a>
+        <a href="User.js.html#sunlight-1-line-622">line 622</a>
 	
 
 	
@@ -4891,11 +4894,14 @@ email confirmation and setting the password manually</p></p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".getAll">getAll(opts)</h4>
-    <span class="type-signature">&lt;async, static> </span>
     
-    
-    <p class="summary"><p>Loads a list of all users visible for the logged-in user.</p></p>
+        <h4 class="name" id=".getAll">getAll(opts)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Loads a list of all users visible for the logged-in user.</p></p>
+        
     
 </dt>
 <dd>
@@ -5065,7 +5071,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-552">line 552</a>
+        <a href="User.js.html#sunlight-1-line-587">line 587</a>
 	
 
 	
@@ -5095,11 +5101,14 @@ email confirmation and setting the password manually</p></p>
             
 <hr>
 <dt>
-    <h4 class="name" id=".invite">invite(opts)</h4>
-    <span class="type-signature">&lt;async, static> </span>
     
-    
-    <p class="summary"><p>Admin-only: creates a user by sending them an email invite.</p></p>
+        <h4 class="name" id=".invite">invite(opts)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Admin-only: creates a user by sending them an email invite.</p></p>
+        
     
 </dt>
 <dd>
@@ -5278,7 +5287,7 @@ finish setting-up the user.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-688">line 688</a>
+        <a href="User.js.html#sunlight-1-line-723">line 723</a>
 	
 
 	
@@ -5401,7 +5410,7 @@ The original user object will be modified in-place with whatever values are appl
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-437">line 437</a>
+        <a href="User.js.html#sunlight-1-line-431">line 431</a>
 	
 
 	
@@ -5522,7 +5531,7 @@ me.save()
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on Wed Apr 18th 2018
+		on Mon Apr 23rd 2018
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

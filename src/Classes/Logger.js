@@ -11,12 +11,14 @@ let log_level = LOG_LEVEL.ALL;
 
 
 /**
- * @class Logger
+ * @class 
+ * @hideconstructor
  */
 export class Logger {
 
 
     /**
+     * @summary
      * Print something to the console as a message
      */
     static log(...items) {
@@ -27,6 +29,7 @@ export class Logger {
 
 
     /**
+     * @summary
      * Print something to the console as an info message
      */
     static info(...items) {
@@ -37,6 +40,7 @@ export class Logger {
 
 
     /**
+     * @summary
      * Print something to the console as a warning
      */
     static warn(...items) {
@@ -47,6 +51,7 @@ export class Logger {
 
 
     /**
+     * @summary
      * Print something to the console as an error
      */
     static error(...items) {
@@ -57,6 +62,7 @@ export class Logger {
 
 
     /**
+     * @summary
      * Sets the logging level
      */
     static setLogLevel(level) {

@@ -5,7 +5,8 @@ import { Guest } from "./Guest";
 
 
 /**
- * @class ChatMessage
+ * @class
+ * @hideconstructor
  * @classdesc
  * ChatMessages describe individual messages inside a {@link Chat}. This can be simple messages like 
  * text or files, or events like a user joining a group. For more information about the various types
