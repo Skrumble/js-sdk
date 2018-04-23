@@ -114,7 +114,7 @@ The goal of the SDK is to provide convenient access to the full functionality of
     - [x] Get one
     - [x] Get all
     - [ ] **Update chat info**
-    - [ ] **Delete chat**
+    - [x] Delete chat
     - [x] Generate guest url
     - [x] Mark as read
     - [x] Add user to group

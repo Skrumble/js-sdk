@@ -868,6 +868,34 @@ export class Chat {
 
     /**
      * @summary
+     * Deletes a chat
+     *
+     * @returns {Promise} Promise that will resolve with the server response as the first argument if
+     * the chat is deleted, or rejected with the error as the first argument
+     *
+     * @example
+     * let myChat = await Chat.get({ id: "abc123" });
+     * if (window.confirm('delete this chat?')) {
+     *   myChat.delete()
+     * }
+     */
+    async delete() {
+
+        let delete_res;
+
+        try {
+            delete_res = await APISocket.delete(`chat/${this.id}`);
+        } catch (err) {
+            throw Error(err);
+        }
+
+        return delete_res;
+
+    }
+
+
+    /**
+     * @summary
      * Listen for changes to this chat coming in over the APISocket.
      *
      * @description
