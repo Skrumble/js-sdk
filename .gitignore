@@ -3,7 +3,7 @@ dist/*
 node_modules/*
 coverage/*
 out/*
-
+.nyc_output/*
 
 # Logs and OS junk
 yarn-*.log
