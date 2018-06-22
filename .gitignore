@@ -5,6 +5,8 @@ coverage/*
 out/*
 .nyc_output/*
 
+package-lock.json
+
 # Logs and OS junk
 yarn-*.log
 *.DS_Store
