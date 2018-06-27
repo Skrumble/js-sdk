@@ -35,6 +35,10 @@ export class Client {
    * @returns {Promise} Promise that will resolve with newly created client if the client creation was successful, and be rejected with an error as the first argument if the attempt fails
    *
    * @example
+   * Client.create({ client_name: "abc123" })
+   *   .then((client) => {
+   *     // Handle new client here
+   *   })
    */
   static async create(opts) {
     var options = Object.assign(
