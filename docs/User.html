@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li><li><a href="Workspace.html">Workspace</a></li>
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -76,7 +76,7 @@
         
             <div class="class-description"><p>The User class allows read access to user information. It's also possible to update User information with <a href="User.html#save"><code>save()</code></a> if the User you're editing is yourself, or 
 if you're logged-in as an Admin. Static methods like <code>get()</code> or <code>create()</code> won't work on User instances, but will retrieve or create 
-User objects respectively. Instances of User will emit socket events when information about them is modified, see <code>on()</code> for more details</p></div>
+User objects respectively. Users will emit socket events when information about them is modified</p></div>
         
     
 </header>
@@ -133,7 +133,7 @@ User objects respectively. Instances of User will emit socket events when inform
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-71">line 71</a>
+        <a href="User.js.html#sunlight-1-line-68">line 68</a>
 	
 
 	
@@ -169,16 +169,13 @@ User objects respectively. Instances of User will emit socket events when inform
         <h5>Example</h5>
         
     <pre class="sunlight-highlight-javascript">var workingUser = User.create({
-     email: &quot;user@example.com&quot;,  // Required
-     plan: &quot;pro&quot;,                // Required
-     first_name: &quot;Test&quot;,
-     last_name: &quot;User&quot;
+  email: &quot;user@example.com&quot;,  // Required
+  plan: &quot;pro&quot;,                // Required
+  first_name: &quot;Test&quot;,         // Required, minlength: 2
+  last_name: &quot;User&quot;,          // Required, minlength: 2 
+  password: &quot;Password1&quot;,      // Required, minlength: 8
+  team: &quot;abc123&quot;              // Required
 })
-
-// Listen for events
-workingUser.on(&quot;change&quot;, () =&gt; {
-     console.log(workingUser, &quot;has been updated!&quot;);
-});
 
 // Persist changes
 workingUser.position = &quot;CEO&quot;;
@@ -297,7 +294,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-372">line 372</a>
+        <a href="User.js.html#sunlight-1-line-369">line 369</a>
 	
 
 	
@@ -404,7 +401,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-129">line 129</a>
+        <a href="User.js.html#sunlight-1-line-126">line 126</a>
 	
 
 	
@@ -512,7 +509,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-291">line 291</a>
+        <a href="User.js.html#sunlight-1-line-288">line 288</a>
 	
 
 	
@@ -619,7 +616,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-300">line 300</a>
+        <a href="User.js.html#sunlight-1-line-297">line 297</a>
 	
 
 	
@@ -726,7 +723,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-225">line 225</a>
+        <a href="User.js.html#sunlight-1-line-222">line 222</a>
 	
 
 	
@@ -833,7 +830,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-206">line 206</a>
+        <a href="User.js.html#sunlight-1-line-203">line 203</a>
 	
 
 	
@@ -940,7 +937,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-390">line 390</a>
+        <a href="User.js.html#sunlight-1-line-387">line 387</a>
 	
 
 	
@@ -1047,7 +1044,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-113">line 113</a>
+        <a href="User.js.html#sunlight-1-line-110">line 110</a>
 	
 
 	
@@ -1152,7 +1149,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-234">line 234</a>
+        <a href="User.js.html#sunlight-1-line-231">line 231</a>
 	
 
 	
@@ -1259,7 +1256,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-89">line 89</a>
+        <a href="User.js.html#sunlight-1-line-86">line 86</a>
 	
 
 	
@@ -1366,7 +1363,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-272">line 272</a>
+        <a href="User.js.html#sunlight-1-line-269">line 269</a>
 	
 
 	
@@ -1473,7 +1470,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-281">line 281</a>
+        <a href="User.js.html#sunlight-1-line-278">line 278</a>
 	
 
 	
@@ -1580,7 +1577,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-318">line 318</a>
+        <a href="User.js.html#sunlight-1-line-315">line 315</a>
 	
 
 	
@@ -1687,7 +1684,7 @@ workingUser.save();</pre>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-81">line 81</a>
+        <a href="User.js.html#sunlight-1-line-78">line 78</a>
 	
 
 	
@@ -1799,7 +1796,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-179">line 179</a>
+        <a href="User.js.html#sunlight-1-line-176">line 176</a>
 	
 
 	
@@ -1913,7 +1910,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-381">line 381</a>
+        <a href="User.js.html#sunlight-1-line-378">line 378</a>
 	
 
 	
@@ -2020,7 +2017,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-97">line 97</a>
+        <a href="User.js.html#sunlight-1-line-94">line 94</a>
 	
 
 	
@@ -2127,7 +2124,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-345">line 345</a>
+        <a href="User.js.html#sunlight-1-line-342">line 342</a>
 	
 
 	
@@ -2234,7 +2231,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-354">line 354</a>
+        <a href="User.js.html#sunlight-1-line-351">line 351</a>
 	
 
 	
@@ -2341,7 +2338,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-327">line 327</a>
+        <a href="User.js.html#sunlight-1-line-324">line 324</a>
 	
 
 	
@@ -2448,7 +2445,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-121">line 121</a>
+        <a href="User.js.html#sunlight-1-line-118">line 118</a>
 	
 
 	
@@ -2555,7 +2552,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-164">line 164</a>
+        <a href="User.js.html#sunlight-1-line-161">line 161</a>
 	
 
 	
@@ -2662,7 +2659,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-105">line 105</a>
+        <a href="User.js.html#sunlight-1-line-102">line 102</a>
 	
 
 	
@@ -2769,7 +2766,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-155">line 155</a>
+        <a href="User.js.html#sunlight-1-line-152">line 152</a>
 	
 
 	
@@ -2877,7 +2874,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-138">line 138</a>
+        <a href="User.js.html#sunlight-1-line-135">line 135</a>
 	
 
 	
@@ -2984,7 +2981,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-146">line 146</a>
+        <a href="User.js.html#sunlight-1-line-143">line 143</a>
 	
 
 	
@@ -3091,7 +3088,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-253">line 253</a>
+        <a href="User.js.html#sunlight-1-line-250">line 250</a>
 	
 
 	
@@ -3198,7 +3195,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-363">line 363</a>
+        <a href="User.js.html#sunlight-1-line-360">line 360</a>
 	
 
 	
@@ -3305,7 +3302,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-197">line 197</a>
+        <a href="User.js.html#sunlight-1-line-194">line 194</a>
 	
 
 	
@@ -3412,7 +3409,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-188">line 188</a>
+        <a href="User.js.html#sunlight-1-line-185">line 185</a>
 	
 
 	
@@ -3519,7 +3516,7 @@ by official Skrumble clients to determine interface language.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-215">line 215</a>
+        <a href="User.js.html#sunlight-1-line-212">line 212</a>
 	
 
 	
@@ -3627,7 +3624,7 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-263">line 263</a>
+        <a href="User.js.html#sunlight-1-line-260">line 260</a>
 	
 
 	
@@ -3734,7 +3731,7 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-336">line 336</a>
+        <a href="User.js.html#sunlight-1-line-333">line 333</a>
 	
 
 	
@@ -3841,7 +3838,7 @@ redirected to the user's voicemail box. <code>false</code> will disable voicemai
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-309">line 309</a>
+        <a href="User.js.html#sunlight-1-line-306">line 306</a>
 	
 
 	
@@ -4122,7 +4119,7 @@ To send an invite, see <a href="User.html#.invite"><code>invite</code></a>.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-804">line 804</a>
+        <a href="User.js.html#sunlight-1-line-758">line 758</a>
 	
 
 	
@@ -4454,7 +4451,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-666">line 666</a>
+        <a href="User.js.html#sunlight-1-line-620">line 620</a>
 	
 
 	
@@ -4625,7 +4622,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-861">line 861</a>
+        <a href="User.js.html#sunlight-1-line-815">line 815</a>
 	
 
 	
@@ -4840,7 +4837,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-622">line 622</a>
+        <a href="User.js.html#sunlight-1-line-576">line 576</a>
 	
 
 	
@@ -5071,7 +5068,7 @@ email confirmation and setting the password manually</p></p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-587">line 587</a>
+        <a href="User.js.html#sunlight-1-line-541">line 541</a>
 	
 
 	
@@ -5287,7 +5284,7 @@ finish setting-up the user.</p>
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-723">line 723</a>
+        <a href="User.js.html#sunlight-1-line-677">line 677</a>
 	
 
 	
@@ -5354,11 +5351,14 @@ finish setting-up the user.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="save">save()</h4>
-    <span class="type-signature">&lt;async> </span>
     
-    
-    <p class="summary"><p>Saves the details of a given user by sending a PATCH request.</p></p>
+        <h4 class="name" id="save">save()</h4>
+
+        <span class="type-signature">&lt;async> </span>
+
+        
+        <p class="summary"><p>Saves the details of a given user by sending a PATCH request.</p></p>
+        
     
 </dt>
 <dd>
@@ -5410,7 +5410,7 @@ The original user object will be modified in-place with whatever values are appl
 
 	
         <a href="User.js.html">User.js</a>,
-        <a href="User.js.html#sunlight-1-line-431">line 431</a>
+        <a href="User.js.html#sunlight-1-line-428">line 428</a>
 	
 
 	
@@ -5531,7 +5531,7 @@ me.save()
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on Mon Apr 23rd 2018
+		on Wed Sep 5th 2018
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

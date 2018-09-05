@@ -42,7 +42,7 @@ let editable_fields = [
  * @classdesc 
  * The User class allows read access to user information. It's also possible to update User information with {@link User#save `save()`} if the User you're editing is yourself, or 
  * if you're logged-in as an Admin. Static methods like {@link User#get `get()`} or {@link User#create `create()`} won't work on User instances, but will retrieve or create 
- * User objects respectively. Instances of User will emit socket events when information about them is modified, see {@link User#on `on()`} for more details
+ * User objects respectively. Users will emit socket events when information about them is modified
  * 
  * @summary
  * A Skrumble Team Member.
@@ -50,16 +50,13 @@ let editable_fields = [
  *
  * @example 
  * var workingUser = User.create({
- *      email: "user@example.com",  // Required
- *      plan: "pro",                // Required
- *      first_name: "Test",
- *      last_name: "User"
+ *   email: "user@example.com",  // Required
+ *   plan: "pro",                // Required
+ *   first_name: "Test",         // Required, minlength: 2
+ *   last_name: "User",          // Required, minlength: 2 
+ *   password: "Password1",      // Required, minlength: 8
+ *   team: "abc123"              // Required
  * })
- *
- * // Listen for events
- * workingUser.on("change", () => {
- *      console.log(workingUser, "has been updated!");
- * });
  *
  * // Persist changes
  * workingUser.position = "CEO";
