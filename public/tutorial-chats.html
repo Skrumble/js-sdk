@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Skrumble JS SDK Tutorial: Chats</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Skrumble JS SDK</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-chats.html">Chats</a></li><li><a href="tutorial-logging-in.html">Logging-in</a></li><li><a href="tutorial-managing-teams.html">Managing Teams</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			<section class="tutorial-section">
+
+<header>
+    
+
+    <h2>Chats</h2>
+</header>
+
+<article>
+    <p>Skrumble Chats are exposed through the <code>Chat</code> class, which has a number of static methods to find or create chats. Chats can either be between two users, called <em>Private Chats</em>, or with 1 or more users, called <em>Group Chats</em>. </p>
+<blockquote>
+<p>Note: These tutorials assume that you already have a user that is <a href="/tutorial-logging-in.html">logged-in</a> to the socket. Where necessary, we'll refer to them as <code>myUser</code>.</p>
+</blockquote>
+<h2>Finding chats</h2><p>Chats can either be loaded individually by ID with <a href="Chat.html#.get"><code>Chat.get()</code></a>, or a list of all chats can be loaded with <a href="Chat.html#.getAll"><code>Chat.getAll()</code></a>.</p>
+<pre class="prettyprint source"><code>import {
+  Chat
+} from '@skrumble/js-sdk';
+
+// Load the first 100 chats visible to this user
+var allChats = await Chat.getAll({
+  limit: 100,
+  skip: 0
+})
+
+// allChats now has a list of every chat, so we can do things like ...
+allChats.map((chat) => {
+
+  // logging info...
+  if (chat.type == &quot;private&quot;) { 
+      console.log(`Private chat loaded! Message count: ${chat.messages.length}`);
+  } else if (chat.type == &quot;group&quot;) {
+      console.log(`Group ${chat.name} loaded! Message count: ${chat.messages.length}`);
+  }
+
+  // ... or listening for events/messages
+  // see below for handling these events 
+  chat.on('message', incomingMessageHandler);
+  chat.on('updated', chatUpdatedHandler);
+})
+
+
+// Or load an individual chat, if you know the ID....
+var myChat = await Chat.get({ 
+  id: &quot;abc123..&quot;,
+  message_limit: 1000,
+  message_skip: 0
+})
+
+// ... and it returns a single Chat object
+console.log(myChat.name);</code></pre><h2>Creating chats</h2><p>Creating and updating chats both use the <code>Chat.save()</code> method. If a Chat object has the properties <code>id</code> and <code>created_at</code> set, then the SDK assumes that the chat already exists and attempts to update it using the ID. If either of those fields are unset, then the SDK will assume that it's a new chat, and will attempt to create it instead.</p>
+<pre class="prettyprint source"><code>import {
+  Chat
+} from '@skrumble/js-sdk';
+
+
+// To create a group, specify `type: room`, and `users` is a list of 
+// TeamUserIDs of who should be added. The user creating the group is always
+// added as a participant
+let myNewGroupChat = await new Chat({
+  name: &quot;My awesome group&quot;,
+  purpose: &quot;Let's discuss awesome stuff&quot;,
+  type: &quot;room&quot;,
+  team: myUser.teams[0].id, // This is your logged-in user
+  users: ['abc123...', 'xyz456...']
+}).save();
+
+// Now we can listen for messages  
+myNewGroupChat.on('message', incomingMessageHandler);
+myNewGroupChat.on('updated', chatUpdatedHandler);
+
+
+// Or to create a private chat, specify `type: private` and the 
+// list of users should just be the other user. Private chats
+// don't have a name or purpose.
+let myNewPrivateChat = await new Chat({
+  type: &quot;private&quot;,
+  team: myUser.teams[0].id, // This is your logged-in user
+  users: ['abc123...', 'xyz456...']
+}).save();</code></pre><h2>Chat Messages</h2><p>Once a chat instance has been loaded, messages can be sent and recieved using <code>Chat.on('message')</code> and <code>Chat.sendMessage()</code> methods. We'll use the <code>myNewGroupChat</code> example from above, but this can be any instance of a Chat.</p>
+<pre class="prettyprint source"><code>// Listen for new incoming message. `evt` is the raw socket event, 
+// `message` is the new ChatMessage instance, and `chat` is the Chat instance. 
+myNewGroupChat.on('message', (evt, message, chat) => {
+
+  // The `type` of message will tell us if it's either a
+  // file, text, or an in-chat event log
+  switch (message.type) {
+    case 'text':
+      // Outputs: New message in mygroupname: Hello world!
+      console.log(`New message in ${chat.name}: ${message.body}`);
+    break;
+
+    case 'file':
+      // Outputs: New file in mygroupname: filename.jpg (100kb)
+      console.log(`New file in ${chat.name}: ${message.file.name} (${message.file.size})`);
+    break;
+
+    // Messages are sent to the chat announcing things like 
+    // users entering/leaving, starting or stopping a group call, 
+    // or renaming the chat. Private chats will also log voicemails from the other user
+    case 'call_log':
+    case 'voicemail':
+    case 'chat_renamed':
+    case 'chat_purpose':
+    case 'chat_locked':
+    case 'participant_added':
+    case 'particpant_removed':
+    case 'recording_video':
+      console.log(`New event log in ${chat.name}: ${message.type}, ${JSON.stringify(message.body)}`);
+    break;
+  }
+
+});</code></pre><p>Sending a text message simply requires the chat instance, and the text to be sent. Similar to chat creation, <code>sendMessage</code> returns a promise that's resolved with the ChatMessage instance once the API has successfully sent the message.  </p>
+<p>Successful outbound messages will also trigger <code>Chat.on('message')</code>, so user interfaces can respond to outbound messages as well.</p>
+<p>If the message fails to send, the promise will be rejected with any applicable error.</p>
+<pre class="prettyprint source"><code>myNewGroupChat.on('message', (evt, message, chat) => {
+  if (message.from == myUser) console.log(&quot;Message from myself&quot;, message)
+
+  // Inbound and outbound messages can use this same callback to update the UI
+  document.getElementById(&quot;chatMessageList&quot;).innerHTML = chat.toHTML();
+});
+
+// Send the message...
+try {
+  let mySentMessage = await myNewGroupChat.sendMessage(&quot;Hello world!&quot;)
+} catch (err) {
+  console.error(&quot;Message failed to send:&quot;, err); 
+}</code></pre><h3>Emoji</h3><p>There are two ways to send emoji inside of chat messages. The unicode glyph (eg, 🎱) can be used, or the shortcode version from <a href="https://www.emojione.com/emoji/v3">EmojiOne</a> (eg <code>:confused:</code>) can be used. Messages can even use a combination of both: </p>
+<pre class="prettyprint source lang-javascript"><code>let emojiMsg = await myChat.sendMessage('hello 👋 :thumbs_up:')</code></pre><p>The official Skrumble clients will replace shortcodes with the proper emoji glyphs (eg, <code>:thumbs_up:</code> into 👍), and any unicode glyphs will be rendered in the local character set.</p>
+<h3>Mentions</h3><p>When sending messages with the type of <code>text</code>, the body can contain <strong>mentions</strong> of other users or groups. When a user is mentioned, they'll recieve an additional notification that someone has mentioned them in a chat. Users will only receive notifications if the mention happens in a group they have access to. Group mentions simply act as links to other groups.</p>
+<p>On the official <a href="https://app.skrumble.com">skrumble desktop client</a>, both types of mentions will be parsed into links that can be hovered-over for more information. Messages can contain as many mentions as desired, and will work in both private and group chats.</p>
+<p>The format for mentions is similar to XML. To mention a user, specify their TeamUserID as the <code>user</code> attribute, and their name as the content of the node. Or to mention a group, specify the Chat ID as the <code>room</code> attribute, and the group name as the content of the node:</p>
+<pre class="prettyprint source lang-xml"><code>&lt;mention user=&quot;abc123...&quot;>Lauren Ipsum&lt;/mention>
+&lt;mention room=&quot;123abc...&quot;>My Group Name&lt;/mention></code></pre><p>Note that only one mention per tag is allowed, but a message can contain an unlimited number of mentions.</p>
+<p>When sending, simply add the <code>&lt;mention&gt;</code> tag to the body of your message: </p>
+<pre class="prettyprint source lang-javascript"><code>let userMentionMsg = await myChat.sendMessage(`Hey, &lt;mention user=&quot;abc123...&quot;>Lauren Ipsum&lt;/mention> how's it going!`)</code></pre><p>This can be made even easier if you already have the <code>User</code> object that you're trying to mention: </p>
+<pre class="prettyprint source lang-javascript"><code>let user = await User.get({ id: &quot;abc123...&quot; });
+let userMentionMsg = await myChat.sendMessage(`Hey, &lt;mention user=&quot;${user.id}&quot;>${user.first_name} ${user.last_name}&lt;/mention> how's it going!`);</code></pre><p>When receiving a message containing mentions, the ChatMessage properties <code>room_mentions</code> and <code>user_mentions</code> will respectively have an array of group or user objects, however: </p>
+<pre class="prettyprint source"><code>myNewGroupChat.on('message', (evt, message, chat) => {
+
+  // This message contains user mentions
+  if (message.user_mentions.length > 0) {
+
+    // Log all the mentioned users 
+    message.user_mentions.map((mentioned_user) => {
+      console.log(`Mentioned user: ${mentioned_user.first_name} ${mentioned_user.last_name} (${mentioned_user.id})`) 
+    });
+
+  }
+
+  // This message contains room mentions
+  if (message.room_mentions.length > 0) {
+
+    // Log all the mentioned groups 
+    message.room_mentions.map((mentioned_group) => {
+      console.log(`Mentioned group: ${mentioned_group.name} - ${mentioned_group.purpose} (${mentioned_group.id})`) 
+    });
+
+  }
+
+});</code></pre><h3>Translations</h3><p>Any message with the type of <code>text</code> can be translated into the language of choice for the current user. Languages for the translation are automatic and based on the <code>language</code> property of the user sending the message, and the user performing the translation. For example, if a user with the <code>language</code> of <code>es</code> sends a message, and the current user has a language of <code>fr</code>, then this will attempt to translate from Spanish to French.</p>
+<pre class="prettyprint source"><code>// Listen for new incoming message. `evt` is the raw socket event, 
+// `message` is the new ChatMessage instance, and `chat` is the Chat instance. 
+myNewGroupChat.on('message', async (evt, message, chat) => {
+
+    if (message.from.language != &quot;en&quot;) {
+        // This is from a non-english speaking user
+        let en_translation = await message.translate(); 
+        console.log(`New message translated: ${en_translation}`)
+    }
+
+});</code></pre>
+</article>
+
+</section>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+	<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>
+
+
+	<span class="copyright">
+	Skrumble
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Tue Jan 15th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

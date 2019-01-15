@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Skrumble JS SDK Tutorial: Logging-in</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Skrumble JS SDK</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-chats.html">Chats</a></li><li><a href="tutorial-logging-in.html">Logging-in</a></li><li><a href="tutorial-managing-teams.html">Managing Teams</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			<section class="tutorial-section">
+
+<header>
+    
+
+    <h2>Logging-in</h2>
+</header>
+
+<article>
+    <p>In order to authenticate, all applications need a set of <em>Client Credentials</em>, which identify an app to the API. Each set of credentials is specific to the <a href="https://developers.skrumble.com/environment-ur-ls">server environment</a> they were created for, meaning Sandbox credentials won't work on Production and vice-versa. See the <a href="https://developers.skrumble.com/authentication">Authentication</a> and <a href="https://developers.skrumble.com/managing-applications">Managing Applications</a> guides on the <em>Skrumble for Developers</em> website. </p>
+<p>Once your credentials are created, the first step is to import the SDK and configure the <code>APISocket</code> to use use your client creds, along with URLs for the server. For this tutorial we'll use the <a href="https://developers.skrumble.com/sandbox-environment">Sandbox</a> to avoid costs.</p>
+<pre class="prettyprint source"><code>import {
+  APISocket
+} from '@skrumble/js-sdk';
+let registeredUser, loadedChat
+
+APISocket.config({ 
+  client_id: &quot;iK47Sr....&quot;,
+  client_secret: &quot;$2y$10$J...&quot;, 
+  api_hostname: &quot;sandbox.skrumble.com&quot;,
+  auth_hostname: &quot;sandbox-auth.skrumble.com&quot;
+})</code></pre><p>Now that the socket is configured with the correct hostnames and credentials, users can start to log-in to any existing team on the Communication API. To create a new team, see the <a href="./tutorial-managing-teams.html"><em>Managing Teams</em></a> tutorial.</p>
+<p>Most of the JS-SDK is written with promises, which means that you can either log-in with the traditonal <code>.then()</code>/<code>.catch()</code> syntax, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">async/await</a> if your application is using ES2017: </p>
+<pre class="prettyprint source"><code>// either ES6-style with promises ...
+myUser = APISocket.login({
+  email: &quot;skrumble_user@example.com&quot;,
+  password: &quot;123456&quot;
+}).then((myUser) => {
+  console.log(myUser, 'now logged in!');
+}).catch((error) => {
+  throw new Error(err);  
+});
+
+
+// ... or ES2017 using async/await
+try {
+
+  let myUser = await APISocket.login({
+    email: &quot;skrumble_user@example.com&quot;,
+    password: &quot;123456&quot;
+  })
+
+  console.log(myUser, 'now logged in!');
+
+} catch(err) {
+  throw new Error(err);  
+}</code></pre><p>The result for either example is that <code>myUser</code> will be a fully authenticated user, meaning that they should have an access token and refresh token. Incorrect username/password combinations will be rejected by the server, and in these examples will throw an Error. </p>
+<p>Both tokens are automatically decorated on the <code>APISocket</code>, as is the user who has connected:</p>
+<pre class="prettyprint source"><code>// After login...
+console.log(APISocket.access_token);  // abc123...
+console.log(APISocket.refresh_token); // xyz123...
+console.log(APISocket.current_user);  // User object  </code></pre><p>Now it will be possible to start <a href="./tutorial-chats.html">using chats</a>, inviting <a href="./tutorial-guests.html">guests</a>, or <a href="./tutorial-managing-teams.html">adding new users</a>.</p>
+</article>
+
+</section>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+	<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>
+
+
+	<span class="copyright">
+	Skrumble
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Tue Jan 15th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

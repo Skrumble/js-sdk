@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Skrumble JS SDK Guest</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Skrumble JS SDK</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-chats.html">Chats</a></li><li><a href="tutorial-logging-in.html">Logging-in</a></li><li><a href="tutorial-managing-teams.html">Managing Teams</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-10">
+	
+		<div id="main">
+			
+
+	<h1 class="page-title">Guest</h1>
+<section>
+
+<header>
+    
+        <!-- <h2> -->
+        <!-- Guest -->
+        <!-- </h2> -->
+        
+            <div class="class-description"><p>Guests are temporary users that are granted access to one group <a href="Chat.html">Chat</a> using the chat's guest URL.</p></div>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-12">line 12</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Properties</h3>
+
+        <dl>
+            
+<hr>
+<dt class="name" id="avatar">
+    <h4 id="avatar">avatar</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The URL of the guest's avatar.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>avatar</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-52">line 52</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="caller_id_name">
+    <h4 id="caller_id_name">caller_id_name</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>When making outbound calls, this will be the name field of the Caller ID, visible to the other caller. If this is blank
+(default), the name will default to <a href="Team.html#caller_id_name"><code>Team.caller_id_name</code></a>.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>caller_id_name</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-109">line 109</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="caller_id_number">
+    <h4 id="caller_id_number">caller_id_number</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>When making outbound calls, this will be the number field of the Caller ID, visible to the other caller. If this is blank (default), the name will default to <a href="Team.html#caller_id_number"><code>Team.caller_id_number</code></a>.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>caller_id_number</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-118">line 118</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="chat_id">
+    <h4 id="chat_id">chat_id</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The <a href="Chat.html#id">Chat ID</a> this guest is valid for.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>chat_id</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-70">line 70</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="email">
+    <h4 id="email">email</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The email address of the guest.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-61">line 61</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="first_name">
+    <h4 id="first_name">first_name</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The first name of the guest.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>first_name</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-34">line 34</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="id">
+    <h4 id="id">id</h4>
+    <span class="type-signature">&lt;readonly> </span> <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The ID of the user, assigned by the API</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-25">line 25</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="last_name">
+    <h4 id="last_name">last_name</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The last name of the guest.</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>last_name</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-43">line 43</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="role">
+    <h4 id="role">role</h4>
+     <span class="type-signature">String</span>
+
+    
+    <p class="summary"><p>The user's role on the team, possibilities are <code>admin</code> or <code>member</code></p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>role</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-88">line 88</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="teams">
+    <h4 id="teams">teams</h4>
+    <span class="type-signature">&lt;readonly> </span> <span class="type-signature">Array.&lt;<a href="Team.html">Team</a>></span>
+
+    
+    <p class="summary"><p>A list of teams this user is on</p></p>
+    
+</dt>
+<dd>
+    
+
+
+    
+<dl class="details">
+    
+
+
+    <!-- <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>teams</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl> -->
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-99">line 99</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    
+        <h4 class="name" id=".exists">exists(opts)</h4>
+
+        <span class="type-signature">&lt;async, static> </span>
+
+        
+        <p class="summary"><p>Check if a guest exists on a given team.</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Guests are unique to each team, so a Team or TeamID must also be supplied, and can only
+be called after logging-in. This is called automatically by <a href="Chat.html#inviteGuest"><code>Chat.inviteGuest()</code></a>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for this request</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Email of the guest to look for</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>team</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Team.html">Team</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The team to look for this guest in. Either a Team object or a Team ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+        <a href="Guest.js.html">Guest.js</a>,
+        <a href="Guest.js.html#sunlight-1-line-153">line 153</a>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">Guest.exists({ email: &quot;guestuser@example.com&quot;, team: myTeam })
+  .then((guestExists) =&gt; console.log(guestExists ? &#x27;guest exists!&#x27; : &#x27;no guest with that email&#x27;))
+  .catch((err) =&gt; console.error(err))</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-2">
+			<div id="toc" class="col-md-2 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+	<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>
+
+
+	<span class="copyright">
+	Skrumble
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Tue Jan 15th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

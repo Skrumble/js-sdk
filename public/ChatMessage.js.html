@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Skrumble JS SDK Source: ChatMessage.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.paper.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Skrumble JS SDK</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="APISocket.html">APISocket</a></li><li><a href="Chat.html">Chat</a></li><li><a href="ChatMessage.html">ChatMessage</a></li><li><a href="Guest.html">Guest</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Team.html">Team</a></li><li><a href="User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-chats.html">Chats</a></li><li><a href="tutorial-logging-in.html">Logging-in</a></li><li><a href="tutorial-managing-teams.html">Managing Teams</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: ChatMessage.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import { APISocket } from "./APISocket";
+import { Logger } from "./Logger";
+import { User } from "./User";
+import { Guest } from "./Guest";
+
+
+/**
+ * @class
+ * @hideconstructor
+ * @classdesc
+ * ChatMessages describe individual messages inside a {@link Chat}. This can be simple messages like 
+ * text or files, or events like a user joining a group. For more information about the various types
+ * of ChatMessages and how to handle them, see {@link ChatMessage#type `type`}.
+ */
+export class ChatMessage {
+
+    constructor(opts) {
+
+        /**
+         * @prop type
+         * @type {String}
+         * @summary
+         * The type of event this message is for. 
+         *
+         * @description
+         * ChatMessages don't just represent traditional text messages or files, but also several different types of notifications about the chat itself. Options are:
+         *
+         * | Type | Description |
+         * | --- | --- |
+         * | `text` | This is a text chat message, with the content in {@link ChatMessage#body `body`}. |
+         * | `file` | A file message with the properties of the file on the {@link ChatMessage#file `file`} property. |
+         * | `call_log` | A record of a call with this chat. Call logs for groups will have the `body.type` of `conference_started` (starting a call), `conference_ended` (call ended), `conference_join` (user joining call), or `conference_leave` (user leaving call). Private chats will have the `body.type` of `missed` or `call` (which will have `body.duration` with the duration of the call in seconds). |
+         * | `voicemail` | A voicemail left by another user in a private chat. The {@link ChatMessage#file `file`} field will be a wav file of the message |
+         * | `chat_renamed` | Group chat only. The `name` of this chat was changed. The `body` will be an object: `{ 'new': 'group new name', 'old': 'group previous name' }` |
+         * | `chat_purpose` | Group chat only. The `purpose` of this chat was changed. The `body` will be an object: `{ 'new': 'group new purpose', 'old': 'group prev purpose' }` |
+         * | `chat_locked` | Group chat only. A user has locked/unlocked a group. The `body` will be `1` if the group was locked, and `0` if it was unlocked |
+         * | `participant_added` | Group chat only. User(s) have been added to the chat. The `body` will be an array of users that have been added. | 
+         * | `participant_removed` | Group chat only. User(s) have been removed from the chat. The `body` will be an array of users that have been removed. | 
+         * | `recording_video` | The recording of a group conference, along with an optional transcript. The attached file is the recording. |  
+         */
+        this.type = ""
+
+        /**
+         * @prop body
+         * @type {String}
+         * @summary
+         * The content of the message.
+         */
+        this.body = "" 
+
+
+        /**
+         * @prop file
+         * @type {Object}
+         * @summary
+         * Files attached to this message, or `false`. 
+         *
+         * @description
+         * For messages with a {@link ChatMessage#type `type`} of `file`, `recording_video`, or `voicemail`, this will be the information about the file. Messages of other types will have this set to `false`.
+         *
+         * | Property       | Description                                           |
+         * | --------       | -----------                                           |
+         * | `url`          | Public URL to download this file                      |
+         * | `created_at`   | ISO 8601 string of the time the file was created      |
+         * | `name`         | Full uploaded path and filename                       |
+         * | `size`         | Filesize in bytes                                     |
+         * | `filename`     | Filename only                                         |
+         * | `thumb_url`    | Thumbnail URL, for `png`, `jpg`, and `gif` files only | 
+         * | `thumbHeight`  | Height in px of the thumbnail                         |
+         * | `thumbWidth`   | Width in px of the thumbnail                          |
+         */
+        this.file = false;
+
+        /**
+         * @prop chat
+         * @type {String}
+         * @summary
+         * The ID of the Chat this belongs to
+         */
+        this.chat = ""
+
+
+        /**
+         * @prop created_at
+         * @type {String}
+         * @summary
+         * The ISO 8601 string representing the time this message was created on the server
+         */
+        this.created_at = ""
+
+        /**
+         * @prop from
+         * @type {(User|Guest)}
+         * @summary
+         * Who this message was sent by.
+         */
+        this.from = "" 
+
+        /**
+         * @prop id
+         * @type {String}
+         * @summary
+         * The unique ID of this message.
+         */
+        this.id = ""
+
+        /**
+         * @prop language
+         * @type {String}
+         * @summary
+         * The language this message was sent in.
+         */
+        this.language = ""
+
+        /**
+         * @prop links
+         * @type {String[]}
+         * @summary
+         * An array of URLs in this message.
+         */
+        this.links = []
+
+        /**
+         * @prop room_mentions
+         * @type {Array}
+         * @summary
+         * An array of mentions to chats in this message.
+         */
+        this.room_mentions = []
+
+        /**
+         * @prop user_mentions
+         * @type {Array}
+         * @summary
+         * An array of mentions to users in this message
+         */
+        this.user_mentions = []
+
+
+        // Assign in passed values
+        for(let [key, value] of Object.entries(opts)) {
+            if (this.hasOwnProperty(key)) { 
+
+                if (key == "from" &amp;&amp; value.role) { 
+                    if (value.role !== "guest") value = new User(value);
+                    if (value.role === "guest") value = new Guest(value);
+                }
+
+                // Convert user mentions to real user objects
+                if (key == "user_mentions" &amp;&amp; Array.isArray(value) &amp;&amp; value.length > 0) {
+                    value.map((user_mention) => {
+                        if (user_mention.role !== "guest") return new User(user_mention);
+                        if (user_mention.role === "guest") return new Guest(user_mention);
+                    });
+                }
+
+                // Convert group mentions to real chat objects
+                if (key == "group_mentions" &amp;&amp; Array.isArray(value) &amp;&amp; value.length > 0) {
+                    value.map((group_mention) => new Chat(group_mention));
+                }
+
+                this[key] = value;
+            } else {
+                // Logger.info("Key not found", key, value);
+            }
+        }
+
+
+    }
+
+
+    /**
+     * @summary
+     * Translates a message and returns the translation.
+     *
+     * @description
+     * Languages for the translation are automatic and based on the `language` property of the user sending the message, and the user performing the translation. For example, if a user with the `language` of `es` sends a message, and the current user has a language of `fr`, then this will attempt to translate from Spanish to French. This will only work on messages with the `type` of `text`
+     * @see {@linkcode User#language User.language}
+     *
+     * @returns {Promise} Promise that will resolve with the translation as the first argument
+     *
+     * @example 
+     * ChatMessage.translate()
+     *   .then((translation) => {
+     *     console.log(translation);
+     *   })
+     */
+    async translate() {
+
+        if (!this.id) throw TypeError("ChatMessage.translate can only be called on a ChatMessage with an id");
+        if (!this.chat) throw TypeError("ChatMessage.translate can only be called on a ChatMessage with an associated chat");
+        if (this.type !== 'text') throw TypeError("ChatMessage.translate can only be called on ChatMessages with the type of 'text'");
+
+        let translate_res;
+
+        try {
+            translate_res = await APISocket.get(`chat/${this.chat}/messages/${this.id}/translate`)
+        } catch (err) {
+            throw Error(err);
+        }
+
+        return translate_res;
+
+    }
+
+
+    /**
+     * @summary
+     * Converts a chat to an HTML fragment for debugging purposes.
+     *
+     * @example
+     * document.getElementById("chat_msg_debug") = chat_message.toHTML();
+     */
+    toHTML() {
+
+        var date = new Date(this.created_at).toLocaleString();
+        var message = `&lt;em>(${date})&lt;/em> &lt;strong>${this.from.first_name} ${this.from.last_name}&lt;/strong>`;
+
+        switch (this.type) {
+
+            case "text":
+                this.body = ("" + this.body).replace(/((http|https|ftp):\/\/[\w?=&amp;.\/-;#~%-]+(?![\w\s?&amp;.\/;#~%"=-]*>))/g, '&lt;a href="$1" target="_blank">$1&lt;/a>')
+                message += `: ${this.body}`;
+                break;
+
+            case "call_log":
+                switch (this.body.type) {
+                    case "conference_started":
+                        message += ` started a call`;
+                        break;
+                    case "conference_ended":
+                        message += ` ended the call`;
+                        break;
+                    case "conference_join":
+                        message += ` joined the call`;
+                        break;
+                    case "conference_leave":
+                        message += ` left the call`;
+                        break;
+                    case "missed": 
+                        message += ` called &lt;strong>${this.body.to.first_name} ${this.body.to.last_name}&lt;/strong> (missed)`
+                        break;
+                    case "call":
+                        message += ` called &lt;strong>${this.body.to.first_name} ${this.body.to.last_name}&lt;/strong> &lt;em>(${this.body.duration}s)&lt;/em>` 
+                        break;
+                    default: 
+                        // debugger;
+
+                }
+                break; 
+
+            case "participant_added":
+                message += " joined the conversation";
+                break;
+
+            case "participant_removed":
+                message += " left the conversation";
+                break;
+
+            case "chat_locked":
+                if (!!this.body) {
+                    message += " locked the conversation";
+                } else {
+                    message += " unlocked the conversation";
+                }
+                break;
+
+            case "chat_purpose":
+                message += ` changed the purpose from &lt;em>${this.body.old}&lt;/em> to &lt;em>${this.body.new}&lt;/em>`;
+                break;
+
+            case "chat_renamed": 
+                message += ` renamed the conversation from &lt;em>${this.body.old}&lt;/em> to &lt;em>${this.body.new}&lt;/em>`;
+                break;
+
+            case "voicemail": 
+                message += ` left a voicemail [&lt;a href="${this.file.url}" target="_blank">link&lt;/a>]`;
+                break;
+
+            case "file": 
+                message += ` sent &lt;em>${this.file.filename}&lt;/em> [&lt;a href="${this.file.url}" target="_blank">link&lt;/a>]`;
+                break;
+
+            case "recording_video":
+                message += ` made a recording [&lt;a href="${this.file.url}" target="_blank">link&lt;/a>]`;
+                break;
+
+            case "room":
+                message = "";
+                break;
+
+            default:
+                // debugger;
+                message = "";
+                break;
+        }
+
+        return message;
+    }
+
+
+}
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+	<style>@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700'); @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i'); code, pre, .sunlight-highlighted, .sunlight-container, .sunlight-container textarea { font-family: 'Inconsolata' !important; font-size: 14px !important; line-height: 1.3 !important;} body { font-size: 14px; line-height: 1.5; } #toc-content { padding-top: 30px; }</style>
+
+
+	<span class="copyright">
+	Skrumble
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Tue Jan 15th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
