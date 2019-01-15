@@ -9,7 +9,6 @@ pages:
   stage: deploy
   script:
   - npm run docs
-  - npm run docs_dash
   artifacts:
     paths:
     - public
