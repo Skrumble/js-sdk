@@ -1,0 +1,16 @@
+{
+    "getting-started": {
+        "title": "Getting Started",
+        "children": {
+            "logging-in": { 
+                "title": "Logging-in"
+            },
+            "managing-teams": {
+                "title": "Managing Teams"
+            }
+        }
+    },
+    "chats": {
+        "title": "Chats"
+    }
+}

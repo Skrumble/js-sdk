@@ -10,40 +10,39 @@ npm i --save @skrumble/js-sdk
 
 Or to install with yarn, run:
 ```bash
-yarn install @skrumble/js-sdk
+yarn add @skrumble/js-sdk
 ```
 
 ## Usage
 The SDK supports multiple formats for loading, depending on your environment:
 
 **UMD**
-```js
+```javascript
 var {
-    Chat,
-    APISocket
+  Chat,
+  APISocket
 } = require('@skrumble/js-sdk')
 ```
 
 **ES6**
-```js
+```javascript
 import {
-    Chat, 
-    APISocket
+  Chat, 
+  APISocket
 } from '@skrumble/js-sdk'
 ```
 
 In case your environment doesn't support either, the SDK also exports a global called `Skrumble`, which contains the same classes as properties: 
 
-```js
+```javascript
 let Chat = Skrumble.Chat    
 let APISocket = Skrumble.APISocket
 ```
 
-
 ### Configuring & Logging-in 
 First you'll need:
-1. Client credentials from the Skrumble [Developer site](https://developers.skrumble.com/request-key)
-2. Hostnames for the environment you're using, see the [Environments list](https://developers.skrumble.com/knowledge-base/skrumble-api-overview/#environments) in the developer docs
+1. Client credentials from the Skrumble [Developer portal](https://portal.skrumble.com/request-key). See the [_Managing Applications_](https://developers.skrumble.com/managing-applications) guide for more about generating creds
+2. Hostnames for the environment you're using, see the [_Environment URLs_](https://developers.skrumble.com/environment-ur-ls) guide for a reference
 
 ```javascript
 import {
@@ -59,7 +58,6 @@ APISocket.config({
   auth_hostname: "sandbox-auth.skrumble.com"
 })
 
-
 try {
   registeredUser = await APISocket.login({
     email: "skrumble_user@example.com",
@@ -68,7 +66,6 @@ try {
 } catch(err) {
   throw new Error(err);  
 }
-
 
 try {
   chatList = await Chat.getAll();
@@ -80,86 +77,4 @@ console.log(`Logged in as ${registeredUser.first_name}, found chat list of ${cha
 ```
 
 ## Contributing
-The SDK is an open-source project, so Pull Requests and bug reports are encouraged. Before contributing, see the [Github Issues](https://github.com/Skrumble/js-sdk/issues) page to ensure your issue/feature isn't a duplicate. 
-
-### Documentation
-There are separate NPM tasks for generating and serving docs. To generate the docs, run `npm run docs`, which will read the code in `src/` and output it to `docs/`. 
-
-To view it in a browser using SimpleHTTPServer, run `npm run docs_serve`. The docs should now be visible at [localhost:5000/index.html](http://localhost:5000/index.html)
-
-### Testing
-The SDK currently uses mocha/chai as a testing suite. `npm run test` will run the tests and output results to the console. 
-
-### Roadmap
-The goal of the SDK is to provide convenient access to the full functionality of the [Skrumble REST API](http://developers.skrumble.com/knowledge-base/skrumble-rest-api/). For maintainers/contributors, unchecked items below are unimplemented, and therefore a good place to start contributing. **Bold items** are high-priority features. See our list of [Github Issues](https://github.com/Skrumble/js-sdk/issues) for information about individual features.
-
-- [ ] Teams
-    - [x] Create team
-    - [x] Update team info
-- [ ] Users
-    - [x] Create user (add to team)
-    - [x] Update user info
-    - [x] Invite user
-    - [x] Invite guest
-    - [x] Get one
-    - [x] Get all
-    - [x] Check existing
-    - [x] User login
-    - [x] Guest login
-    - [ ] Deactivate user
-    - [ ] Register device for notification
-    - [ ] Deregister device for notification
-- [ ] Chat
-    - [x] Create
-    - [x] Get one
-    - [x] Get all
-    - [ ] **Update chat info**
-    - [x] Delete chat
-    - [x] Generate guest url
-    - [x] Mark as read
-    - [x] Add user to group
-    - [x] Remove user from group
-    - [ ] Messages
-        - [x] Send/recieve messages
-        - [ ] Send file by URL
-        - [ ] **Send file by data**
-        - [ ] **Get unread**
-        - [x] Translate message
-    - [ ] Links
-        - [ ] Get links by chat
-        - [ ] Get links for user
-    - [ ] Files
-        - [ ] Get files by chat
-        - [ ] Get files for user
-        - [ ] Get file info 
-- [ ] Integrations
-    - [ ] Integration type support:
-        - [ ] Google
-        - [ ] Office365
-        - [ ] Exchange
-    - [ ] Create integration
-    - [ ] Update integration
-    - [ ] Delete integration
-    - [ ] Contacts
-        - [ ] Create contact
-        - [ ] Update contact
-        - [ ] Delete contact
-        - [ ] Get one 
-        - [ ] Get all
-    - [ ] Events
-        - [ ] Add event
-        - [ ] Update event
-        - [ ] Delete event 
-        - [ ] Get all 
-        - [ ] Get one
-- [ ] Billing
-    - [ ] Add funds
-    - [ ] Get overview
-    - [ ] Get subscriptions
-    - [ ] Add billing address
-    - [ ] Get draft invoice PDF
-    - [ ] Get invoice PDF
-    - [ ] Credit Cards
-        - [ ] Add card
-        - [ ] Delete card 
-        - [ ] Get all
+The SDK is an open-source project, so Pull Requests and bug reports are encouraged. Before contributing, see the [Github Issues](https://github.com/Skrumble/js-sdk/issues) page to ensure your issue/feature isn't a duplicate, and consult the CONTRIBUTING.md doc for information about contribution guidelines as well as the feature roadmap.  

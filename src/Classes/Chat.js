@@ -483,7 +483,7 @@ export class Chat {
      * @async
      * @summary
      * Saves a chat object by attempting to commit any dirty fields to the appropriate API endpoints. If the chat
-     * has an `id` and `created_at` date, then it will attempt to save the information. If 
+     * has an `id` and `created_at` date, then it will attempt to save the information. If those fields are unset, then the chat is assumed to be new and is created instead. 
      */
     async save(opts) {
         
@@ -649,7 +649,6 @@ export class Chat {
             throw new Error("Chat.addUser only accepts User object(s), recieved", typeof users);
         }
 
-
      }
 
 
@@ -685,7 +684,6 @@ export class Chat {
         } else {
             throw new Error("Chat.addUser only accepts User object(s), recieved", typeof users);
         }
-
 
      }
 

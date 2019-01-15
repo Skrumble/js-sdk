@@ -106,7 +106,7 @@ export class APISocket {
      *
      * @description
      * Logs-in a user with the provided email and password. When the returned promise
-     * is resolved, it will return the authenticated user. Also connects user to the socket by default.
+     * is resolved, it will return the authenticated user. Also connects user to the socket by default. See {@tutorial logging-in} for more
      *
      * @memberof APISocket
      * @param {Object} opts     The options for this request
@@ -117,7 +117,7 @@ export class APISocket {
      * manually using {@link connectSocket} 
      *
      * @static
-     *
+     * @tutorial logging-in
      * @example
      * APISocket.login({
      *    email: "myuser@gmail.com",

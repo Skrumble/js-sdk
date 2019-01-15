@@ -7,10 +7,11 @@
     ],
     "opts": {
         "recurse": true,
-        "destination": "./docs",
+        "destination": "./public",
         "template": "./jsdoc/template",
         "readme": "README.md",
-        "package": "package.json"
+        "package": "package.json",
+        "tutorials": "./jsdoc/tutorials"
     },
     "tags": {
         "allowUnknownTags": true
