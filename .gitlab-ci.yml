@@ -1,0 +1,12 @@
+# This file is a template, and might need editing before it works on your project.
+# Full project: https://gitlab.com/pages/plain-html
+pages:
+  stage: deploy
+  script:
+  - npm run docs
+  - npm run docs_dash
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
