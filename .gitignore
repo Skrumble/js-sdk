@@ -12,3 +12,7 @@ yarn-*.log
 
 # Temp files
 .tmp/*
+
+# Lock files
+package-lock.json
+yarn.lock
