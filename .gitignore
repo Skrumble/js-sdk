@@ -3,7 +3,9 @@ dist/*
 node_modules/*
 coverage/*
 out/*
+.nyc_output/*
 
+package-lock.json
 
 # Logs and OS junk
 yarn-*.log
