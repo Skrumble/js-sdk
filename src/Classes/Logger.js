@@ -11,7 +11,7 @@ let log_level = LOG_LEVEL.ALL;
 
 
 /**
- * @class 
+ * @class
  * @hideconstructor
  */
 export class Logger {

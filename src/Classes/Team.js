@@ -1,7 +1,7 @@
 import { APISocket } from "./APISocket";
 import { Logger } from "./Logger";
 import { User } from "./User";
-import axios from 'axios'; 
+import axios from 'axios';
 
 
 /**
@@ -10,7 +10,7 @@ import axios from 'axios';
  * @ignore
  */
 let editable_fields = [
-    'team_name', 
+    'team_name',
     'country',
     'city',
     'state',
@@ -24,10 +24,10 @@ let editable_fields = [
 
 
 /**
- * @class 
+ * @class
  * @hideconstructor
  * @classdesc
- * The settings and info for a team. 
+ * The settings and info for a team.
  *
  */
 export class Team {
@@ -37,7 +37,7 @@ export class Team {
 
         /**
          * @prop id
-         * @type {String} 
+         * @type {String}
          * @summary
          * Unique ID of the team.
          */
@@ -56,7 +56,7 @@ export class Team {
         /**
          * @prop team_name
          * @type {String}
-         * @summary 
+         * @summary
          * Display name of the team.
          */
         this.team_name = "";
@@ -109,7 +109,7 @@ export class Team {
 
         /**
          * @prop address_1
-         * @type {String} 
+         * @type {String}
          * @summary
          * Team's address line 1
          */
@@ -155,7 +155,7 @@ export class Team {
          * @prop caller_id_name
          * @type {String}
          * @summary
-         * The default caller ID name field for all members.  
+         * The default caller ID name field for all members.
          *
          * @see {@link User#caller_id_name}
          */
@@ -174,7 +174,7 @@ export class Team {
 
 
         for(let [key, value] of Object.entries(opts)) {
-            if (this.hasOwnProperty(key)) { 
+            if (this.hasOwnProperty(key)) {
                 this[key] = value;
             } else {
                 // Logger.info("Key not found", key, value);
@@ -207,7 +207,7 @@ export class Team {
      *
      * @description
      * Creates a team by first creating an Owner account, who is the first user
-     * on the team. Then creates the team and assigns the Owner to it. NB: Team names are unique 
+     * on the team. Then creates the team and assigns the Owner to it. NB: Team names are unique
      *
      * @param {Object} opts                     Options for the request
      * @param {String} opts.owner_first_name    Owner's first name
@@ -220,7 +220,7 @@ export class Team {
      * @param {String} opts.state               Team state
      * @param {String} [opts.referral_code]     Referral code, if any
      *
-     * @returns {Promise} Promise that will resolve with the newly created team if the team creation was successful, and be rejected with an error as the first argument if the attempt fails  
+     * @returns {Promise} Promise that will resolve with the newly created team if the team creation was successful, and be rejected with an error as the first argument if the attempt fails
      *
      * @example
      * let owner_email = "owner@example.com";
@@ -240,7 +240,7 @@ export class Team {
      *     console.log("new team created", newTeam);
      *
      *     // You can log-in now as the owner
-     *     APISocket.login({ 
+     *     APISocket.login({
      *       email: owner_email,
      *       password: owner_password
      *     })
@@ -266,7 +266,7 @@ export class Team {
         let owner_res;
         let team_res;
 
-        // Check for required fields 
+        // Check for required fields
         if (!options.owner_first_name)  throw Error("Team.create requires an owner first name (opts.owner_first_name)");
         if (!options.owner_last_name)   throw Error("Team.create requires an owner last name (opts.owner_last_name)");
         if (!options.owner_email)       throw Error("Team.create requires an owner email (opts.owner_email)");
@@ -288,21 +288,21 @@ export class Team {
 
         // Check to see if the team already exists
         try {
-            team_exists = await Team.exists(options.name) 
+            team_exists = await Team.exists(options.name)
         } catch (err) {
             throw Error(err);
         }
 
-        if (team_exists) throw Error(`Team.create can't use an existing team name, ${options.name} is already in use`) 
+        if (team_exists) throw Error(`Team.create can't use an existing team name, ${options.name} is already in use`)
 
         // Check to see if the owner already exists
         try {
-            owner_exists = await User.exists(options.owner_email) 
+            owner_exists = await User.exists(options.owner_email)
         } catch (err) {
             throw Error(err);
         }
-    
-        if (owner_exists) { 
+
+        if (owner_exists) {
             throw Error(`Team.create can't use an existing owner, ${options.owner_email} is already in use`);
         } else {
 
@@ -313,13 +313,13 @@ export class Team {
                     last_name: options.owner_last_name,
                     email: options.owner_email,
                     password: options.owner_password,
-                }); 
+                });
             } catch(err) {
                 throw Error(err);
             }
 
             // If the owner was created, create the team
-            if (parseInt(owner_res.status, 10) === 201) { 
+            if (parseInt(owner_res.status, 10) === 201) {
                 try {
                     team_res = await axios.post(`${APISocket.api_url}/v3/team`, {
                         team_name: options.name,
@@ -333,7 +333,7 @@ export class Team {
                     throw Error(err);
                 }
 
-                if (parseInt(team_res.status, 10) === 201) { 
+                if (parseInt(team_res.status, 10) === 201) {
                     return new Team(team_res.data);
                 } else {
                     throw Error(`Team.create failed to create a Team. Error ${team_res.status}: ${team_res.statusText}`)
@@ -355,7 +355,7 @@ export class Team {
      * Admin-only: save any changed information about a Team. The original team object will be modified in-place
      * with whatever values are applied successfully, and a copy will be passed into the promise.
      *
-     * @returns {Promise} Promise that will resolve with the updated Team as the first argument, or rejected with the error as the first argument 
+     * @returns {Promise} Promise that will resolve with the updated Team as the first argument, or rejected with the error as the first argument
      *
      * @example
      * let me = await APISocket.login({ ...opts })
@@ -369,14 +369,14 @@ export class Team {
      */
     async save() {
 
-        let save_res; 
+        let save_res;
 
         if (!this.id) throw Error("Team.save must be run on a User object with an ID");
 
-        // Only send the params this request that can be edited 
+        // Only send the params this request that can be edited
         let request_options = _.pick(this, editable_fields);
 
-        // Send updated values to API 
+        // Send updated values to API
         try {
             save_res = await APISocket.patch(`team/${this.id}`, request_options);
         } catch (err) {
@@ -386,7 +386,7 @@ export class Team {
         // Assign in passed values
         if (save_res) {
             for (let [key, value] of Object.entries(save_res)) {
-                if (this.hasOwnProperty(key))  this[key] = value;  
+                if (this.hasOwnProperty(key))  this[key] = value;
             }
         }
 
@@ -397,10 +397,10 @@ export class Team {
 
     /**
      * @summary
-     * Check if a team exists, in order to create one safely. This is called automatically during Team.create() 
-     * 
-     * @param {String} team_name        Team name to check the existence of  
-     * @returns {Promise}           Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument 
+     * Check if a team exists, in order to create one safely. This is called automatically during Team.create()
+     *
+     * @param {String} team_name        Team name to check the existence of
+     * @returns {Promise}           Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument
      *
      * @example
      * Team.exists("My team name")
@@ -423,9 +423,9 @@ export class Team {
 
         response_code = parseInt(exists_res.status, 10);
 
-        if (Math.floor(response_code / 100) === 2) { 
+        if (Math.floor(response_code / 100) === 2) {
             if (
-                typeof exists_res.data == "object" 
+                typeof exists_res.data == "object"
                 && Object.prototype.hasOwnProperty.call(exists_res.data, 'exists')
             ) {
                 return !!exists_res.data.exists;

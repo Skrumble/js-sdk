@@ -9,10 +9,10 @@ import { removeTrailingSlash } from "../Skrumble";
 
 
 /**
- * @class 
+ * @class
  * @hideconstructor
  * @classdesc
- * Allows connection to the Skrumble API through a persistent socket connection. Many other classes like {@link User}, {@link Chat}, and {@link Department} rely on APISocket to make requests.  
+ * Allows connection to the Skrumble API through a persistent socket connection. Many other classes like {@link User}, {@link Chat}, and {@link Department} rely on APISocket to make requests.
  */
 export class APISocket {
 
@@ -40,7 +40,7 @@ export class APISocket {
         /**
          * @readonly
          * @prop client_secret
-         * @type {String} 
+         * @type {String}
          * @summary
          * The Client Secret of the application. This is read-only, set using {@link config}
          */
@@ -60,7 +60,7 @@ export class APISocket {
          * @readonly
          * @prop api_url
          * @type {String}
-         * 
+         *
          */
         this.api_url = "https://app.skrumble.com";
 
@@ -85,7 +85,7 @@ export class APISocket {
          */
         this.refresh_token = "";
 
-        
+
         /**
          * @readonly
          * @prop current_user
@@ -113,8 +113,8 @@ export class APISocket {
      * @param {String} opts.email    Email address of the account to log-in
      * @param {String} opts.password Password of the account to log-in
      * @param {Boolean} [opts.connect_socket=true]   After a successful login, should the user's socket
-     * connection be initiated automatically. If this is disabled the socket connection must be created 
-     * manually using {@link connectSocket} 
+     * connection be initiated automatically. If this is disabled the socket connection must be created
+     * manually using {@link connectSocket}
      *
      * @static
      * @tutorial logging-in
@@ -138,7 +138,7 @@ export class APISocket {
             email: false,
             password: false,
             connect_socket: true
-        }, opts); 
+        }, opts);
 
         if (!options.email)     fields_missing.push("email");
         if (!options.password)  fields_missing.push("password");
@@ -146,8 +146,8 @@ export class APISocket {
         if (fields_missing.length > 0) {
             throw new Error("Login error, fields missing:", fields_missing.join(', '))
         }
-        
-        let auth_url = `https://${this.auth_hostname}/v1/login-user` 
+
+        let auth_url = `https://${this.auth_hostname}/v1/login-user`
 
         // Get the user's token and refresh token
         let auth_result = await axios({
@@ -161,8 +161,8 @@ export class APISocket {
                 client_secret: this.client_secret
             }
         });
-    
-        if (Math.floor(auth_result.status/100) !== 2) { 
+
+        if (Math.floor(auth_result.status/100) !== 2) {
             throw new Error(err);
         } else {
 
@@ -194,14 +194,14 @@ export class APISocket {
 
 
 
-    /** 
+    /**
      * @summary
      * Authenticates a guest and start listening for events over a persistent socket connection.
      *
      * @description
      * Logs-in a guest user, which are given access only to one group conversation. When the returned
-     * promise is resolved, it will return the authenticated guest user. Also connects to the socket 
-     * by default. 
+     * promise is resolved, it will return the authenticated guest user. Also connects to the socket
+     * by default.
      *
      * @memberof APISocket
      * @param {Object} opts             The options for this request
@@ -230,7 +230,7 @@ export class APISocket {
 
         if (!options.email)         fields_missing.push('email');
         if (!options.first_name)    fields_missing.push('first_name');
-        if (!options.last_name)     fields_missing.push('last_name'); 
+        if (!options.last_name)     fields_missing.push('last_name');
         if (!options.pin)           fields_missing.push('pin');
         if (!options.chat)          fields_missing.push('chat');
         if (!options.team)          fields_missing.push('team');
@@ -248,7 +248,7 @@ export class APISocket {
         })
 
 
-        if (Math.floor(auth_result.status/100) !== 2) { 
+        if (Math.floor(auth_result.status/100) !== 2) {
             throw new Error(err);
         } else {
 
@@ -283,19 +283,19 @@ export class APISocket {
     /**
      * Load the current user based on their access token
      *
-     * @memberof APISocket 
+     * @memberof APISocket
      * @static
      */
     static async loadCurUser() {
 
-        var user_result = await APISocket.get(`user/me?populate=teams&extension=true`) 
+        var user_result = await APISocket.get(`user/me?populate=teams&extension=true`)
 
         // User is on one team: normalize values that are stored on the TeamUser object
         if (user_result.teams.length === 1) {
 
             // Properties defined on the TeamUser that need to be normalized back into actual user properties
             var team_user = await APISocket.get(`team/${user_result.teams[0].id}/users/${user_result.id}`)
-            for (let [key, value] of Object.entries(team_user)) { 
+            for (let [key, value] of Object.entries(team_user)) {
                 user_result[key] = value;
             }
 
@@ -306,7 +306,7 @@ export class APISocket {
         delete user_result.extensionSecret;
 
         return user_result;
- 
+
     }
 
 
@@ -325,7 +325,7 @@ export class APISocket {
         return new Promise((resolve, reject) => {
 
             const socket = io(
-                `${this.api_url}`, 
+                `${this.api_url}`,
                 {
                     path: '/socket.io/',
                     transports: ['websocket'],
@@ -372,20 +372,20 @@ export class APISocket {
         this.current_user = false;
     }
 
-    
+
     /**
      * @static
      * @async
      * @summary
-     * Sends a GET request to the API socket. 
+     * Sends a GET request to the API socket.
      *
      * @param {String} url      - Url to be passed to socket.io.get()
      * @param {Object} data     - Data to be sent with the request
      *
      * @returns {Promise}       - A promise object that either is resolved
      * with success for sucessful (`2xx`) responses with the body of the response
-     * as the first argument. If the request fails (`!= 2xx`), the promise will 
-     * be rejected with the body of the response as the first argument, and a 
+     * as the first argument. If the request fails (`!= 2xx`), the promise will
+     * be rejected with the body of the response as the first argument, and a
      * JSON Websocket Response object as the second argument.
      */
     static get(url, data, append_url = true) {
@@ -397,13 +397,13 @@ export class APISocket {
      * @static
      * @async
      * @summary
-     * Sends a POST request 
+     * Sends a POST request
      *
      * @param {String} url      - Url to be passed to socket.io.get()
      * @param {Object} options  - Options object to be passed to socket.io.get()
      * @returns {Promise}       - A promise object that either is resolved
      * with success for sucessful (`2xx`) responses with the body of the response
-     * as the first argument. If the request fails (`!= 2xx`), the promise will 
+     * as the first argument. If the request fails (`!= 2xx`), the promise will
      * be rejected with the body of the response as the first argument.
      */
     static post(url, data, append_url = true) {
@@ -415,13 +415,13 @@ export class APISocket {
      * @static
      * @async
      * @summary
-     * Sends a POST request 
+     * Sends a POST request
      *
      * @param {String} url      - Url to be passed to socket.io.get()
      * @param {Object} options  - Options object to be passed to socket.io.get()
      * @returns {Promise}       - A promise object that either is resolved
      * with success for sucessful (`2xx`) responses with the body of the response
-     * as the first argument. If the request fails (`!= 2xx`), the promise will 
+     * as the first argument. If the request fails (`!= 2xx`), the promise will
      * be rejected with the body of the response as the first argument.
      */
     static patch(url, data, append_url = true) {
@@ -433,13 +433,13 @@ export class APISocket {
      * @static
      * @async
      * @summary
-     * Sends a DELETE request 
+     * Sends a DELETE request
      *
      * @param {String} url      - Url to be passed to socket.io.get()
      * @param {Object} options  - Options object to be passed to socket.io.get()
      * @returns {Promise}       - A promise object that either is resolved
      * with success for sucessful (`2xx`) responses with the body of the response
-     * as the first argument. If the request fails (`!= 2xx`), the promise will 
+     * as the first argument. If the request fails (`!= 2xx`), the promise will
      * be rejected with the body of the response as the first argument.
      */
     static delete(url, data, append_url = true) {
@@ -453,13 +453,13 @@ export class APISocket {
      * @summary
      * Sends a request with a given HTTP method. Shorthand versions are available
      * as APISocket.get(), post(), patch(), and delete()
-     * 
+     *
      * @param {String} method   - HTTP Method to be used in the request
      * @param {String} url      - Url to be passed to socket.io.get()
      * @param {Object} options  - Options object to be passed to socket.io.get()
      * @returns {Promise}       - A promise object that either is resolved
      * with success for sucessful (`2xx`) responses with the body of the response
-     * as the first argument. If the request fails (`!= 2xx`), the promise will 
+     * as the first argument. If the request fails (`!= 2xx`), the promise will
      * be rejected with the body of the response as the first argument.
      */
     static request(method, url, data, append_url = true) {
@@ -468,23 +468,23 @@ export class APISocket {
 
             this.socket.emit(method,
                 {
-                    url: (append_url) ? `${APISocket.api_url}/v3/${url}` : url, 
+                    url: (append_url) ? `${APISocket.api_url}/v3/${url}` : url,
                     headers: {
                         "Authorization": `Bearer ${this.access_token}`
                     },
                     method,
-                    data, 
+                    data,
                 },
                 async (res) => {
-                    if (Math.floor(res.statusCode/100) === 2) { 
-                        resolve(res.body, res); 
+                    if (Math.floor(res.statusCode/100) === 2) {
+                        resolve(res.body, res);
                     } else {
                         throw new Error(`${res.statusCode} error: ${res.body}`);
                         reject(res.body, res);
                     }
                 }
             )
- 
+
         })
 
     }
@@ -492,23 +492,23 @@ export class APISocket {
     /**
      * @static
      * @summary
-     * Listens for socket messages coming into the API socket. 
+     * Listens for socket messages coming into the API socket.
      *
      * @description
-     * The Skrumble API will emit the following types of events: 
+     * The Skrumble API will emit the following types of events:
      *
      * | Event | Description |
      * | --- | --- |
      * | chat | This is the event about a chat, including new messages, changes to the participant list, or name |
-     * | user | Event is about a user that has changed: `state`, `status`, `*_name`, `avatar`, etc | 
-     * | teamuser | Event is about a user that has changed: `state`, `status`, `*_name`, `avatar`, etc | 
+     * | user | Event is about a user that has changed: `state`, `status`, `*_name`, `avatar`, etc |
+     * | teamuser | Event is about a user that has changed: `state`, `status`, `*_name`, `avatar`, etc |
      * | team | Changes to the team information |
      * | conference | Changes to a group call's status |
      *
      * Because this is a static method, the events above will fire for any activity of that type. For example, `chat` will be triggered on
      * changes to all chats on the current team. To monitor an individual chat, use {@link Chat.on}
      *
-     * @param {String} evt          The event type to listen for 
+     * @param {String} evt          The event type to listen for
      * @param {Function} callback   Callback to fire when the event occurs
      */
     static on(evt, callback) {
@@ -519,7 +519,7 @@ export class APISocket {
         }
     }
 
-    
+
     /**
      * @static
      * @summary
@@ -542,7 +542,7 @@ export class APISocket {
      * @summary
      * Configures the API socket for use, including the URLs and client tokens
      *
-     * @param {Object} opts                 - Configuration options 
+     * @param {Object} opts                 - Configuration options
      * @param {String} opts.client_id       - Client ID of this application
      * @param {String} opts.client_secret   - Client secret of this application
      * @param {String} opts.api_hostnae     - Hostname for API requests, don't include protocol or port number
@@ -557,13 +557,13 @@ export class APISocket {
             auth_hostname: "app.skrumble.com"
         }, opts);
 
-        if (options.client_id) { 
+        if (options.client_id) {
             this.client_id = options.client_id;
         } else {
             throw new Error("client_id is required");
         }
-        
-        if (options.client_secret) { 
+
+        if (options.client_secret) {
             this.client_secret = options.client_secret;
         } else {
             throw new Error("client_id is required");
@@ -575,9 +575,9 @@ export class APISocket {
         }
 
         if (typeof options.auth_hostname == "string" && !options.auth_hostname.match(/^\s*$/gm)) {
-            this.auth_hostname = removeTrailingSlash(options.auth_hostname); 
+            this.auth_hostname = removeTrailingSlash(options.auth_hostname);
         }
-        
+
     }
 
 

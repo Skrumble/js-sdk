@@ -4,13 +4,13 @@ import axios from 'axios';
 
 
 /**
- * @class 
+ * @class
  * @hideconstructor
  * @classdesc
- * Guests are temporary users that are granted access to one group {@link Chat} using the chat's {@link Chat#guest_url guest URL}. 
+ * Guests are temporary users that are granted access to one group {@link Chat} using the chat's {@link Chat#guest_url guest URL}.
  */
 export class Guest {
-    
+
     constructor(options) {
 
 
@@ -72,9 +72,9 @@ export class Guest {
 
         /*
          * @prop extensionSecret
-         * @type {String} 
+         * @type {String}
          * @summray
-         * The user's password for SIP phone registration. 
+         * The user's password for SIP phone registration.
          */
         this.extension_secret = "";
 
@@ -101,14 +101,14 @@ export class Guest {
 
         /**
          * @prop caller_id_name
-         * @type {String} 
+         * @type {String}
          * @summary
          * When making outbound calls, this will be the name field of the Caller ID, visible to the other caller. If this is blank
          * (default), the name will default to {@linkcode Team#caller_id_name Team.caller_id_name}.
          */
         this.caller_id_name = ""
 
-        
+
         /**
          * @prop caller_id_number
          * @type {String}
@@ -120,7 +120,7 @@ export class Guest {
 
         // Assign in passed values
         for(let [key, value] of Object.entries(options)) {
-            if (this.hasOwnProperty(key)) { 
+            if (this.hasOwnProperty(key)) {
                 this[key] = value;
             } else {
                 // Logger.info("Key not found in Guest", key, value);
@@ -133,17 +133,17 @@ export class Guest {
 
     /**
      * @summary
-     * Check if a guest exists on a given team. 
+     * Check if a guest exists on a given team.
      *
      * @description
      * Guests are unique to each team, so a Team or TeamID must also be supplied, and can only
      * be called after logging-in. This is called automatically by {@link Chat#inviteGuest `Chat.inviteGuest()`}.
-     * 
+     *
      * @param {Object} opts             Options for this request
      * @param {String} opts.email       Email of the guest to look for
      * @param {Team|String} opts.team   The team to look for this guest in. Either a Team object or a Team ID
      *
-     * @returns {Promise}               Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument 
+     * @returns {Promise}               Promise that will resolve with a boolean representing if a team with that name exists or not, or rejected with the error as the first argument
      *
      * @example
      * Guest.exists({ email: "guestuser@example.com", team: myTeam })
@@ -169,19 +169,19 @@ export class Guest {
         }
 
         // If user passed a Team object, pull the ID from that
-        if (options.team.constructor.name == "Team") options.team = options.team.id 
+        if (options.team.constructor.name == "Team") options.team = options.team.id
 
 
         try {
-            exists_res = await APISocket.post(`team/${options.team}/guest/exists`, { 
-                emails: [options.email] 
+            exists_res = await APISocket.post(`team/${options.team}/guest/exists`, {
+                emails: [options.email]
             });
         } catch(err) {
             return new Error(err);
         }
 
         if (
-            typeof exists_res == "object" 
+            typeof exists_res == "object"
             && Object.prototype.hasOwnProperty.call(exists_res, 'existing')
         ) {
             return !!exists_res.existing.length;

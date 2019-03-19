@@ -5,7 +5,7 @@ import { Guest } from "./Guest";
 import { ChatMessage } from "./ChatMessage";
 
 /**
- * @class  
+ * @class
  * @hideconstructor
  * @classdesc
  * A chat comes in two major types (see the `type` property):
@@ -88,16 +88,16 @@ export class Chat {
 
     /**
      * @prop type
-     * @type {String} 
+     * @type {String}
      * @summary
-     * The type of the chat, options are `private` or `group`. 
+     * The type of the chat, options are `private` or `group`.
      */
     type = "";
 
 
     /**
      * @prop name
-     * @type {String} 
+     * @type {String}
      * @summary
      * The name of the chat. For private chats, this will be name of the other user.
      * For a group chat, this will be a separate, unique name.
@@ -114,13 +114,13 @@ export class Chat {
      */
     purpose = "";
 
-    
+
     /**
      * @prop avatar
      * @type {String}
      * @summary
      * The avatar for the chat. Only present on rooms
-     */ 
+     */
     avatar = "";
 
     /**
@@ -140,7 +140,7 @@ export class Chat {
      */
     unread = 0;
 
-    
+
     /**
      * @prop locked
      * @type {Boolean}
@@ -188,7 +188,7 @@ export class Chat {
 
     /**
      * @prop messages
-     * @type {ChatMessage[]} 
+     * @type {ChatMessage[]}
      * @summary
      * The list of {@link ChatMessages} in this chat, in chronological order.
      */
@@ -198,7 +198,7 @@ export class Chat {
     /**
      * @prop users
      * @type {User[]}
-     * @summary 
+     * @summary
      * The list of {@link User Users} in this chat.
      */
     users = [];
@@ -208,7 +208,7 @@ export class Chat {
      * @prop created_at
      * @type {String}
      * @summary
-     * ISO-8601 timestamp of when this chat was created. 
+     * ISO-8601 timestamp of when this chat was created.
      */
     created_at = false;
 
@@ -221,7 +221,7 @@ export class Chat {
      */
     updated_at = false;
 
-    
+
     /**
      * @prop last_seen
      * @type {String}
@@ -255,7 +255,7 @@ export class Chat {
      * @prop favourite
      * @type {Boolean}
      * @summary
-     * Has this chat been marked as a favourite, from the perspective of the 
+     * Has this chat been marked as a favourite, from the perspective of the
      * currently logged-in user.
      */
     favourite = false;
@@ -277,7 +277,7 @@ export class Chat {
 
         // Assign in passed values
         for (let [key, value] of Object.entries(opts)) {
-            if (this.hasOwnProperty(key)) { 
+            if (this.hasOwnProperty(key)) {
 
                 // Stop using the word "room"
                 if (key == "type" && value == "room") value = "group";
@@ -301,14 +301,14 @@ export class Chat {
         if (this.id) {
 
             APISocket.on('chat', (chat_evt) => {
-                
+
                 let updated_evt = false; // Should this event trigger `updated` event
                 let message_evt = false; // Should this event trigger `message` event
 
                 switch (chat_evt.verb) {
-                    case "addedTo": 
+                    case "addedTo":
                         if (chat_evt.attribute == "messages") {
-                           
+
                             switch (chat_evt.added.type) {
                                 case "chat_renamed":
                                     this.name = chat_evt.added.body.new;
@@ -329,12 +329,12 @@ export class Chat {
                             // If this wasn't an update, it was message, so notify listeners
                             if (!updated_evt) message_evt = true;
 
-                        } 
+                        }
                     break;
 
                     case "updated":
-                        if (typeof chat_evt.data.unread !== "undefined") { 
-                            this.unread = chat_evt.data.unread; 
+                        if (typeof chat_evt.data.unread !== "undefined") {
+                            this.unread = chat_evt.data.unread;
                             updated_evt = true
                         } else if (typeof chat_evt.data.last_message_time !== "undefined") {
                             this.last_message_time = chat_evt.data.last_message_time;
@@ -342,7 +342,7 @@ export class Chat {
                         } else if (typeof chat_evt.data.updatedAt !== "undefined") {
                             this.updated_at = chat_evt.data.updatedAt;
                             updated_evt = true
-                        } 
+                        }
                     break;
 
                 }
@@ -391,7 +391,7 @@ export class Chat {
         return extension;
 
     }
-    
+
 
 
     /**
@@ -432,7 +432,7 @@ export class Chat {
     /**
      * @summary
      * Gets a specific chat by ID. Loads chat messages by default, but for smaller responses this can be disabled
-     * with `opts.load_messages = false` 
+     * with `opts.load_messages = false`
      *
      * @param {Object} opts                         The options for this request
      * @param {String} opts.id                      The ID of the chat to load
@@ -441,7 +441,7 @@ export class Chat {
      * @param {Number} [opts.message_skip=0]        Message number to start from
      */
     static async get(opts) {
-            
+
         let options = Object.assign({}, {
             id: false,
             load_messages: true,
@@ -457,7 +457,7 @@ export class Chat {
 
         if (options.load_messages === true) {
             let messages = await APISocket.get(`chat/${options.id}/messages?populate=file&populate=user_mentions&limit=${options.message_limit}&skip=${options.message_skip}`);
-           
+
             messages = messages.sort(function(a, b) {
                 if (new Date(a) < new Date(b)) {
                     return 1;
@@ -469,7 +469,7 @@ export class Chat {
             });
 
             messages.map((message_data) => {
-                chat_info.messages.push(new ChatMessage(message_data)); 
+                chat_info.messages.push(new ChatMessage(message_data));
             })
         }
 
@@ -483,10 +483,10 @@ export class Chat {
      * @async
      * @summary
      * Saves a chat object by attempting to commit any dirty fields to the appropriate API endpoints. If the chat
-     * has an `id` and `created_at` date, then it will attempt to save the information. If those fields are unset, then the chat is assumed to be new and is created instead. 
+     * has an `id` and `created_at` date, then it will attempt to save the information. If those fields are unset, then the chat is assumed to be new and is created instead.
      */
     async save(opts) {
-        
+
         let options = Object.assign({}, {
 
         }, opts);
@@ -496,7 +496,7 @@ export class Chat {
         } else {
             console.log("No created_at, creating new");
             // This is a totally new chat
-            let type = (this.type == "group") ? "room" : this.type; 
+            let type = (this.type == "group") ? "room" : this.type;
             let chat_info = await APISocket.post(`chat/`, {
                 name: this.name,
                 type: type,
@@ -505,7 +505,7 @@ export class Chat {
                 users: this.users
             })
             console.log("Creating a chat returned", chat_info);
-            return new Chat(chat_info); 
+            return new Chat(chat_info);
 
         }
 
@@ -526,7 +526,7 @@ export class Chat {
         let guest_response = await APISocket.get(`chat/${this.id}/generateUrl`)
 
         if (guest_response.constructor.name == "Array") {
-            return new Chat(guest_response[0]); 
+            return new Chat(guest_response[0]);
         } else {
             return new Chat(guest_response);
         }
@@ -540,7 +540,7 @@ export class Chat {
      *
      * @description
      * Sends a text message to a chat, and then triggers the `.on('message')` listeners with the content of the new message.
-     * 
+     *
      * @param {String} message  The message to send
      */
     async sendMessage(message) {
@@ -550,14 +550,14 @@ export class Chat {
 
         let message_props = {
             type: "text",
-            body: message 
+            body: message
         }
 
         let result = APISocket.post(`chat/${this.id}/messages`, message_props)
 
         let msg_object = new ChatMessage(Object.assign(message_props, {
             from: APISocket.current_user,
-            chat: this, 
+            chat: this,
             created_at: new Date().toString()
         }));
 
@@ -576,8 +576,8 @@ export class Chat {
     /**
      * @async
      * @summary
-     * Sends a file 
-     * 
+     * Sends a file
+     *
      * @param {Object} fileObj      The file to send
      */
     async sendFile(fileObj) {
@@ -589,16 +589,16 @@ export class Chat {
         let message_props = {
             type: "filestack",
             chat_id: this.id,
-            body: fileObj 
+            body: fileObj
         }
 
-        message_props.body.extension = this._getFileExtension(fileObj); 
+        message_props.body.extension = this._getFileExtension(fileObj);
 
         let result = APISocket.post(`chat/${this.id}/messages`, message_props)
 
         let msg_object = new ChatMessage(Object.assign(message_props, {
             from: APISocket.current_user,
-            chat: this, 
+            chat: this,
             created_at: new Date().toString()
         }));
 
@@ -616,12 +616,12 @@ export class Chat {
 
     /**
      * @summary
-     * Adds user(s) to a chat 
+     * Adds user(s) to a chat
      *
      * @param {User[]} users  The user(s) to add. Either supply a single User object, or
      * an array of Users to add each.
-     * 
-     * @returns {Chat} Successfully adding will return `true` 
+     *
+     * @returns {Chat} Successfully adding will return `true`
      */
      async addUser(users) {
 
@@ -654,11 +654,11 @@ export class Chat {
 
     /**
      * @summary
-     * Remoevs user(s) from a chat 
+     * Remoevs user(s) from a chat
      *
-     * @param {User[]} users  The user(s) to remove. Either supply a single User object, 
+     * @param {User[]} users  The user(s) to remove. Either supply a single User object,
      * or an array of Users to delete each.
-     * 
+     *
      * @returns {Chat} Successfully deleting will return `true`
      */
      async removeUser(users) {
@@ -687,10 +687,10 @@ export class Chat {
 
      }
 
-    
+
     /**
      * @summary
-     * Invite guest(s) to join a group chat. 
+     * Invite guest(s) to join a group chat.
      *
      * @description
      * Guests can only be added to chats with the {@link Chat#type `type`} of group, can only access the chat they're added to, and will be removed if {@link Chat#generateGuestURL `generateGuestURL`} is called again.
@@ -715,7 +715,7 @@ export class Chat {
         if (!Array.isArray(emails) && typeof emails != 'string') throw TypeError("Chat.inviteGuest requires an array or string, received", typeof emails);
 
         // User supplied a string; make an array for them
-        if (!Array.isArray(emails)) emails = [emails]; 
+        if (!Array.isArray(emails)) emails = [emails];
 
         let add_response;
 
@@ -723,10 +723,10 @@ export class Chat {
         for (let i = 0; i < emails.length; i++) {
             let guest_exists;
             try {
-                guest_exists = await Guest.exists({ 
-                    email: emails[i], 
-                    team: this.team 
-                }) 
+                guest_exists = await Guest.exists({
+                    email: emails[i],
+                    team: this.team
+                })
             } catch (err) {
                 throw Error(err);
             }
@@ -743,7 +743,7 @@ export class Chat {
         }
 
         if (
-            typeof add_response == "object" 
+            typeof add_response == "object"
             && Array.isArray(add_response)
             && add_response.length > 0
         ) {
@@ -786,7 +786,7 @@ export class Chat {
         }
 
         return this;
-        
+
     }
 
 
@@ -825,8 +825,8 @@ export class Chat {
      * @description
      * | Event | Description |
      * | --- | --- |
-     * | `updated` | Chat information has changed. Callback will be called with the signature `callback(evt, chat)` with `evt` being the original socket event, and `chat` is the updated Chat object. This happens when a user changes the `purpose`, `locked`, or `name`. | 
-     * | `message` | New message to this chat, from someone else or from the current user. Callback will be called with the signature `callback(evt, chat, message)` with `evt` being the original socket event, `chat` is the Chat object with the new message inserted in `messages`, and `message` is the {@link ChatMessage} that was sent. | 
+     * | `updated` | Chat information has changed. Callback will be called with the signature `callback(evt, chat)` with `evt` being the original socket event, and `chat` is the updated Chat object. This happens when a user changes the `purpose`, `locked`, or `name`. |
+     * | `message` | New message to this chat, from someone else or from the current user. Callback will be called with the signature `callback(evt, chat, message)` with `evt` being the original socket event, `chat` is the Chat object with the new message inserted in `messages`, and `message` is the {@link ChatMessage} that was sent. |
      *
      * @param {String} evt          The event to listen for
      * @param {function} callback   The callback to fire when the event occurs
@@ -857,13 +857,13 @@ export class Chat {
         if (this.type == "private") {
             let other_user = Skrumble.removeSelf(this.users);
             name = `${other_user.first_name} ${other_user.last_name}`
-            second_line = "" 
+            second_line = ""
         } else {
             name = this.name;
             second_line = this.purpose;
         }
 
-        if (this.messages.length) { 
+        if (this.messages.length) {
             messages = this.messages.reduce(function(acc, msg) {
                 acc = (typeof acc == "object") ? `${acc.toHTML()}<br />\n` : acc;
                 return `${acc} ${msg.toHTML()}<br />\n`;
@@ -872,11 +872,11 @@ export class Chat {
 
         return `
             <header>
-                <h1>${name}</h1> 
+                <h1>${name}</h1>
                 <p>${second_line}</p>
             </header>
-            
-            ${messages}`; 
+
+            ${messages}`;
 
     }
 
