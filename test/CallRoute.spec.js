@@ -1,29 +1,25 @@
 import "babel-polyfill";
-import { CallRoute } from "../src/Classes/CallRoute"
+// @TODO: insert this when it's available
+// import { CallRoute } from "../src/Classes/CallRoute"
 
-var assert = require('chai').assert;
+var assert = require("chai").assert;
 
 describe("CallRoute", () => {
+  it("exists", () => {});
 
-    it("exists", () => {
+  describe("properties", () => {
+    it("draft");
+    it("extension");
+    it("id");
+    it("name");
+    it("owner");
+    it("phone_number");
+    it("route_body");
+    it("team");
+  });
 
-    })
-
-    describe("properties", () => {
-        it("draft");
-        it("extension");
-        it("id");
-        it("name");
-        it("owner");
-        it("phone_number");
-        it("route_body");
-        it("team");
-    });
-
-    describe("methods", () => {
-        it("getAll()")
-        it("save()")
-    });
-
-
+  describe("methods", () => {
+    it("getAll()");
+    it("save()");
+  });
 });

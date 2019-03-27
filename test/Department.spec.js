@@ -1,21 +1,16 @@
 import "babel-polyfill";
-import { Department } from "../src/Classes/Department";
+// @TODO: insert this when it's available
+// import { Department } from "../src/Classes/Department";
 
-var assert = require("chai").assert
+var assert = require("chai").assert;
 
 describe("Department", () => {
+  it("exists", () => {});
 
-    it("exists", () => {
+  describe("properties", () => {
+    it("id");
+    it("extension");
+  });
 
-    })
-
-    describe("properties", () => {
-        it("id");
-        it("extension");
-    });
-
-    describe("methods", () => {
-    });
-
+  describe("methods", () => {});
 });
-
